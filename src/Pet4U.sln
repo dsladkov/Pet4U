@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pet4U.Application", "Pet4U.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pet4U.API", "Pet4U.API\Pet4U.API.csproj", "{8547CC35-22A1-467B-8190-B16BFB834FDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pet4U.Infrastructure", "Pet4U.Infrastructure\Pet4U.Infrastructure.csproj", "{CE09C390-58C6-46A0-BA14-BA5FA78D28B1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{8547CC35-22A1-467B-8190-B16BFB834FDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8547CC35-22A1-467B-8190-B16BFB834FDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8547CC35-22A1-467B-8190-B16BFB834FDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE09C390-58C6-46A0-BA14-BA5FA78D28B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE09C390-58C6-46A0-BA14-BA5FA78D28B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE09C390-58C6-46A0-BA14-BA5FA78D28B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE09C390-58C6-46A0-BA14-BA5FA78D28B1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
