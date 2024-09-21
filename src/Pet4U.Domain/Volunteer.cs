@@ -18,13 +18,14 @@ namespace Pet4U.Domain
     public void AddPet(Pet pet) => _pets.Add(pet);
 
     public IReadOnlyCollection<SocialNetwork> SocialNetworks => _socialNetworks;
+
     private int Counter(Status status) => _pets.Where(p => p.Status == status).Count();
 
     public int HomeFoundedPetsCounter() =>  Counter(Status.FoundHome);
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
     public void AddSocialNetwork(SocialNetwork socialNetwork) => _socialNetworks.Add(socialNetwork);
-    public void AddPaymentINfo(PaymentInfo paymentInfo) => _payments.Add(paymentInfo);
+    public void AddPaymentInfo(PaymentInfo paymentInfo) => _payments.Add(paymentInfo);
    
   }
 }
