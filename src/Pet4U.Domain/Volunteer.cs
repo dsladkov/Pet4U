@@ -7,13 +7,11 @@ namespace Pet4U.Domain
     private List<PaymentInfo> _payments = [];
 
     public Guid Id { get; set; } = Guid.NewGuid();
-    public string FirstName { get; set; } = null!;
-    public string LastName { get; set; } = null!;
-    public string MiddleName { get; set; }
-    public string Email { get; set; }
-    public string Description { get; set; }
-    public int Experience { get; set; }
-    public int Phone { get; set; }
+    public string FullName { get; set; } = null!;
+    public string Email { get; set; } = null!;
+    public string Description { get; set; } = null!;
+    public string Experience { get; set; } = null!;
+    public string Phone { get; set; } = null!;
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);
 
