@@ -1,8 +1,8 @@
 namespace Pet4U.Domain
 {
-  public class PaymentInfo
+  public class SocialNetwork
   {
     public string Title { get; set; } = null!;
-    public string Description { get; set; } = null!;
+    public string Link { get; set; } = null!;
   }
 }
