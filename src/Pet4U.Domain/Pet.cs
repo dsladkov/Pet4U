@@ -6,6 +6,7 @@ namespace Pet4U.Domain
   public class Pet
   {
     private List<PaymentInfo> _paymentInfo = [];
+    private List<PetPhoto> _pets = [];
 
     public Guid Id { get; private set; } = Guid.NewGuid();
     public string Nickname { get; private set; } = null!;
@@ -23,6 +24,9 @@ namespace Pet4U.Domain
     public bool IsVaccinated { get; private set; }
     public Status Status { get; private set; }
     public DateOnly CreateDate { get; private set; }
+    public IReadOnlyCollection<PetPhoto> PetPhotos => _pets;
+
+    protected void AddPetPhoto(PetPhoto petPhoto) => _pets.Add(petPhoto);
 
     public IReadOnlyCollection<PaymentInfo> PaymentInfos => _paymentInfo;
     public void AddPayment(PaymentInfo paymentInfo) => _paymentInfo.Add(paymentInfo);
