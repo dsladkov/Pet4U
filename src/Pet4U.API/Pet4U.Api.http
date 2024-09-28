@@ -1,0 +1,6 @@
+@Pet4U.WebApi_HostAddress = http://localhost:5063
+
+GET {{PlatformTech.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

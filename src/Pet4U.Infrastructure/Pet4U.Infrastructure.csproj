@@ -2,13 +2,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Pet4U.Application\Pet4U.Application.csproj" />
+    <ProjectReference Include="..\Pet4U.Domain\Pet4U.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="EntityFrameworkCore.NamingConventions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.0" />
+    <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSql" Version="8.0.4" />
   </ItemGroup>
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <UserSecretsId>33c1dde3-358c-4fc4-ba80-40f4e9f4ade9</UserSecretsId>
   </PropertyGroup>
 
 </Project>
