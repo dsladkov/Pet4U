@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Pet4U.Application\Pet4U.Application.csproj" />
     <ProjectReference Include="..\Pet4U.Domain\Pet4U.Domain.csproj" />
   </ItemGroup>
 
