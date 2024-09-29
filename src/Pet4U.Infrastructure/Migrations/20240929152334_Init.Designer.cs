@@ -13,8 +13,8 @@ using Pet4U.Infrastructure;
 namespace Pet4U.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240928181651_Initial")]
-    partial class Initial
+    [Migration("20240929152334_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,21 +105,32 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<Guid?>("Volunteeer_Id")
+                    b.Property<Guid?>("VolunteerId")
                         .HasColumnType("uuid")
-                        .HasColumnName("volunteeer_id");
+                        .HasColumnName("volunteer_id");
 
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
 
+                    b.Property<Guid?>("volunteer_Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("volunteer_id");
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("Volunteeer_Id")
-                        .HasDatabaseName("ix_pets_volunteeer_id");
+                    b.HasIndex("VolunteerId")
+                        .HasDatabaseName("ix_pets_volunteer_id");
 
-                    b.ToTable("pets", "core");
+                    b.HasIndex("volunteer_Id")
+                        .HasDatabaseName("ix_pets_volunteer_id1");
+
+                    b.ToTable("pets", "core", t =>
+                        {
+                            t.Property("volunteer_Id")
+                                .HasColumnName("volunteer_id1");
+                        });
                 });
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
@@ -280,21 +291,24 @@ namespace Pet4U.Infrastructure.Migrations
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
                 {
                     b.HasOne("Pet4U.Domain.Modules.Volunteer", "Volunteer")
+                        .WithMany()
+                        .HasForeignKey("VolunteerId")
+                        .HasConstraintName("fk_pets_volunteers_volunteer_id");
+
+                    b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
                         .WithMany("Pets")
-                        .HasForeignKey("Volunteeer_Id")
-                        .HasConstraintName("fk_pets_volunteers_volunteeer_id");
+                        .HasForeignKey("volunteer_Id")
+                        .HasConstraintName("fk_pets_volunteers_volunteer_id1");
 
                     b.Navigation("Volunteer");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.PaymentInfo", b =>
                 {
-                    b.HasOne("Pet4U.Domain.Modules.Volunteer", "Volunteer")
+                    b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
                         .WithMany("PaymentInfos")
                         .HasForeignKey("volunteer_id")
                         .HasConstraintName("fk_payment_info_volunteers_volunteer_id");
-
-                    b.Navigation("Volunteer");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.PetPhoto", b =>

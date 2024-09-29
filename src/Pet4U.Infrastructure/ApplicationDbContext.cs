@@ -24,7 +24,8 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
     {
       optionsBuilder.UseNpgsql(configuration.GetConnectionString( DATABASE))
         .UseSnakeCaseNamingConvention()
-        .UseLoggerFactory( CreatedLoggerFactory() );
+        .UseLoggerFactory( CreatedLoggerFactory() )
+        .EnableSensitiveDataLogging();
         base.OnConfiguring(optionsBuilder);
     }
 

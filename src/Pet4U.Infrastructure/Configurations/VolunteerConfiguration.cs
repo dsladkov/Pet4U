@@ -14,7 +14,7 @@ namespace Pet4U.Infrastructure
             builder.Property(v => v.Id)
               .HasConversion(
                 Id => Id.Value,
-                value => VolunteerId.Create(value)
+                value => VolunteerId.GetNew(value)
               );
 
             builder.ComplexProperty(v => v.FullName, ba =>
@@ -42,23 +42,15 @@ namespace Pet4U.Infrastructure
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
             builder.HasMany(v => v.Pets)
-            .WithOne(v => v.Volunteer)
-            .HasForeignKey("Volunteeer_Id")
-            .IsRequired(false);
-            //.HasForeignKey("pet_id")
-            //.OnDelete(DeleteBehavior.NoAction);
-            //.HasPrincipalKey("pet_id")
-            //.HasForeignKey("volunteer_id");
+            .WithOne()
+            .HasForeignKey("volunteer_Id");
 
             builder.HasMany(v => v.SocialNetworks)
                    .WithMany();
 
             builder.HasMany(m => m.PaymentInfos)
-                   .WithOne(m => m.Volunteer)
-                   .HasForeignKey("volunteer_id")
-                   .IsRequired(false);
-            //.HasForeignKey("payment_info_id");
-            //.HasForeignKey("volunteer_id");
+                   .WithOne()
+                   .HasForeignKey("volunteer_id");
         }
     }
 }

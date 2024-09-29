@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Pet4U.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Initial : Migration
+    public partial class Init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -89,14 +89,21 @@ namespace Pet4U.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     create_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    volunteeer_id = table.Column<Guid>(type: "uuid", nullable: true)
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    volunteer_id1 = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_pets", x => x.id);
                     table.ForeignKey(
-                        name: "fk_pets_volunteers_volunteeer_id",
-                        column: x => x.volunteeer_id,
+                        name: "fk_pets_volunteers_volunteer_id",
+                        column: x => x.volunteer_id,
+                        principalSchema: "core",
+                        principalTable: "volunteers",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_pets_volunteers_volunteer_id1",
+                        column: x => x.volunteer_id1,
                         principalSchema: "core",
                         principalTable: "volunteers",
                         principalColumn: "id");
@@ -163,10 +170,16 @@ namespace Pet4U.Infrastructure.Migrations
                 column: "pet_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pets_volunteeer_id",
+                name: "ix_pets_volunteer_id",
                 schema: "core",
                 table: "pets",
-                column: "volunteeer_id");
+                column: "volunteer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_pets_volunteer_id1",
+                schema: "core",
+                table: "pets",
+                column: "volunteer_id1");
 
             migrationBuilder.CreateIndex(
                 name: "ix_social_network_volunteer_volunteer_id",

@@ -9,13 +9,13 @@ namespace Pet4U.Domain.Modules
   {
     private List<PetPhoto> _petPhoto = [];
 
-    public Pet(PetId id) : base(id){}
+    private Pet(PetId id) : base(id){}
 
     public Pet
     (
       PetId id,
       string nickname, 
-      string Species, 
+      string species, 
       string description,
       string breed,
       string color,
@@ -31,7 +31,21 @@ namespace Pet4U.Domain.Modules
       DateOnly createDate
     ) : base(id)
     {
-      
+      Nickname = nickname;
+      Species = species;
+      Description = description;
+      Breed = breed;
+      Color = color;
+      Health = health;
+      Address = address;
+      Weight = weight;
+      Height = height;
+      Phone = phone;
+      IsNeutered = isNeutered;
+      Birthday = birthDay;
+      IsVaccinated = isVaccinated;
+      Status = status;
+      CreateDate = createDate;
     }
     
     public string Nickname { get; private set; } = null!;
@@ -50,11 +64,8 @@ namespace Pet4U.Domain.Modules
     public Status Status { get; private set; }
     public DateOnly CreateDate { get; private set; }
     public Volunteer? Volunteer { get; set; }
-
-    // public IReadOnlyCollection<PaymentInfo> PaymentInfos => _paymentInfo;
     public IReadOnlyCollection<PetPhoto> PetPhotos => _petPhoto;
 
     public void AddPetPhoto(PetPhoto petPhoto) => _petPhoto.Add(petPhoto);
-    // public void AddPayment(PaymentInfo paymentInfo) => _paymentInfo.Add(paymentInfo);
   }
 }

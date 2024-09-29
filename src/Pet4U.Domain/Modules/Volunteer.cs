@@ -10,12 +10,22 @@ namespace Pet4U.Domain.Modules
 
     private Volunteer(VolunteerId id) : base(id){}
 
-    public Volunteer(VolunteerId id, FullName fullName, string email, string description, int experience, string phone) : base(id)
+    public Volunteer
+      (
+        VolunteerId id, 
+        FullName fullName, 
+        string email, 
+        string description, 
+        int experience, 
+        string phone
+      ) : base(id)
     {
-      
+      FullName = fullName;
+      Email = email;
+      Description = description;
+      Experience = experience;
+      Phone = phone;
     }
-
-    //public VolunteerId Id { get; private set; }
     public FullName FullName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
     public string Description { get; private set; } = null!;
