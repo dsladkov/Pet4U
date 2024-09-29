@@ -63,7 +63,6 @@ namespace Pet4U.Domain.Modules
     public bool IsVaccinated { get; private set; }
     public Status Status { get; private set; }
     public DateOnly CreateDate { get; private set; }
-    public Volunteer? Volunteer { get; set; }
     public IReadOnlyCollection<PetPhoto> PetPhotos => _petPhoto;
 
     public void AddPetPhoto(PetPhoto petPhoto) => _petPhoto.Add(petPhoto);
