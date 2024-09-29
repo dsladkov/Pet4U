@@ -17,8 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Pet4U.Domain\Pet4U.Domain.csproj" />
-    <ProjectReference Include="..\Pet4U.Application\Pet4U.Application.csproj" />
     <ProjectReference Include="..\Pet4U.Infrastructure\Pet4U.Infrastructure.csproj" />
   </ItemGroup>
 
