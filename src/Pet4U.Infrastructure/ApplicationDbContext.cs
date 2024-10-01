@@ -6,7 +6,7 @@ using Pet4U.Domain.Modules;
 
 namespace Pet4U.Infrastructure;
 
-public class ApplicationDbContext(IConfiguration configuration) : DbContext
+public class ApplicationDbContext(IConfiguration configuration) : DbContext 
 {
   private const string DATABASE = "Database";
 
@@ -21,7 +21,7 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseNpgsql(configuration.GetConnectionString( DATABASE))
+      optionsBuilder.UseNpgsql(configuration.GetConnectionString( DATABASE)) 
         .UseSnakeCaseNamingConvention()
         .UseLoggerFactory( CreatedLoggerFactory() )
         .EnableSensitiveDataLogging();

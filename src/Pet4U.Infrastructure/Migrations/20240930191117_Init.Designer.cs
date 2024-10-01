@@ -13,8 +13,8 @@ using Pet4U.Infrastructure;
 namespace Pet4U.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240929153010_Second")]
-    partial class Second
+    [Migration("20240930191117_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -176,36 +176,6 @@ namespace Pet4U.Infrastructure.Migrations
                     b.ToTable("volunteers", "core");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.PaymentInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.Property<Guid?>("volunteer_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_payment_info");
-
-                    b.HasIndex("volunteer_id")
-                        .HasDatabaseName("ix_payment_info_volunteer_id");
-
-                    b.ToTable("payment_info", "core");
-                });
-
             modelBuilder.Entity("Pet4U.Domain.PetPhoto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -285,12 +255,55 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasConstraintName("fk_pets_volunteers_volunteer_id");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.PaymentInfo", b =>
+            modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
                 {
-                    b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
-                        .WithMany("PaymentInfos")
-                        .HasForeignKey("volunteer_id")
-                        .HasConstraintName("fk_payment_info_volunteers_volunteer_id");
+                    b.OwnsOne("Pet4U.Domain.PaymentInfoList", "PaymentInfos", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers", "core");
+
+                            b1.ToJson("PaymentInfos");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("Pet4U.Domain.PaymentInfo", "Data", b2 =>
+                                {
+                                    b2.Property<Guid>("PaymentInfoListVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Description")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Title")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("PaymentInfoListVolunteerId", "Id")
+                                        .HasName("pk_volunteers");
+
+                                    b2.ToTable("volunteers", "core");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("PaymentInfoListVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_payment_info_list_volunteer_id");
+                                });
+
+                            b1.Navigation("Data");
+                        });
+
+                    b.Navigation("PaymentInfos");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.PetPhoto", b =>
@@ -325,8 +338,6 @@ namespace Pet4U.Infrastructure.Migrations
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
                 {
-                    b.Navigation("PaymentInfos");
-
                     b.Navigation("Pets");
                 });
 #pragma warning restore 612, 618

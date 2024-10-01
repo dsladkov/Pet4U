@@ -13,8 +13,8 @@ using Pet4U.Infrastructure;
 namespace Pet4U.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240929152334_Init")]
-    partial class Init
+    [Migration("20240930192613_Third")]
+    partial class Third
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,10 +105,6 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("status");
 
-                    b.Property<Guid?>("VolunteerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
                     b.Property<double>("Weight")
                         .HasColumnType("double precision")
                         .HasColumnName("weight");
@@ -120,17 +116,10 @@ namespace Pet4U.Infrastructure.Migrations
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
-                    b.HasIndex("VolunteerId")
+                    b.HasIndex("volunteer_Id")
                         .HasDatabaseName("ix_pets_volunteer_id");
 
-                    b.HasIndex("volunteer_Id")
-                        .HasDatabaseName("ix_pets_volunteer_id1");
-
-                    b.ToTable("pets", "core", t =>
-                        {
-                            t.Property("volunteer_Id")
-                                .HasColumnName("volunteer_id1");
-                        });
+                    b.ToTable("pets", "core");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
@@ -187,36 +176,6 @@ namespace Pet4U.Infrastructure.Migrations
                     b.ToTable("volunteers", "core");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.PaymentInfo", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("description");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.Property<Guid?>("volunteer_id")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
-                    b.HasKey("Id")
-                        .HasName("pk_payment_info");
-
-                    b.HasIndex("volunteer_id")
-                        .HasDatabaseName("ix_payment_info_volunteer_id");
-
-                    b.ToTable("payment_info", "core");
-                });
-
             modelBuilder.Entity("Pet4U.Domain.PetPhoto", b =>
                 {
                     b.Property<Guid>("Id")
@@ -246,69 +205,111 @@ namespace Pet4U.Infrastructure.Migrations
                     b.ToTable("pet_photo", "core");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.SocialNetwork", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Link")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("link");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text")
-                        .HasColumnName("title");
-
-                    b.HasKey("Id")
-                        .HasName("pk_social_network");
-
-                    b.ToTable("social_network", "core");
-                });
-
-            modelBuilder.Entity("SocialNetworkVolunteer", b =>
-                {
-                    b.Property<Guid>("SocialNetworksId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("social_networks_id");
-
-                    b.Property<Guid>("VolunteerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("volunteer_id");
-
-                    b.HasKey("SocialNetworksId", "VolunteerId")
-                        .HasName("pk_social_network_volunteer");
-
-                    b.HasIndex("VolunteerId")
-                        .HasDatabaseName("ix_social_network_volunteer_volunteer_id");
-
-                    b.ToTable("social_network_volunteer", "core");
-                });
-
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
                 {
-                    b.HasOne("Pet4U.Domain.Modules.Volunteer", "Volunteer")
-                        .WithMany()
-                        .HasForeignKey("VolunteerId")
-                        .HasConstraintName("fk_pets_volunteers_volunteer_id");
-
                     b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
                         .WithMany("Pets")
                         .HasForeignKey("volunteer_Id")
-                        .HasConstraintName("fk_pets_volunteers_volunteer_id1");
-
-                    b.Navigation("Volunteer");
+                        .HasConstraintName("fk_pets_volunteers_volunteer_id");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.PaymentInfo", b =>
+            modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
                 {
-                    b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
-                        .WithMany("PaymentInfos")
-                        .HasForeignKey("volunteer_id")
-                        .HasConstraintName("fk_payment_info_volunteers_volunteer_id");
+                    b.OwnsOne("Pet4U.Domain.PaymentInfoList", "PaymentInfos", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers", "core");
+
+                            b1.ToJson("PaymentInfos");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("Pet4U.Domain.PaymentInfo", "Data", b2 =>
+                                {
+                                    b2.Property<Guid>("PaymentInfoListVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Description")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Title")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("PaymentInfoListVolunteerId", "Id")
+                                        .HasName("pk_volunteers");
+
+                                    b2.ToTable("volunteers", "core");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("PaymentInfoListVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_payment_info_list_volunteer_id");
+                                });
+
+                            b1.Navigation("Data");
+                        });
+
+                    b.OwnsOne("Pet4U.Domain.SocialNetworksList", "SocialNetworks", b1 =>
+                        {
+                            b1.Property<Guid>("VolunteerId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("id");
+
+                            b1.HasKey("VolunteerId");
+
+                            b1.ToTable("volunteers", "core");
+
+                            b1.ToJson("SocialNetworks");
+
+                            b1.WithOwner()
+                                .HasForeignKey("VolunteerId")
+                                .HasConstraintName("fk_volunteers_volunteers_id");
+
+                            b1.OwnsMany("Pet4U.Domain.SocialNetwork", "Data", b2 =>
+                                {
+                                    b2.Property<Guid>("SocialNetworksListVolunteerId")
+                                        .HasColumnType("uuid");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("integer");
+
+                                    b2.Property<string>("Link")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.Property<string>("Title")
+                                        .IsRequired()
+                                        .HasColumnType("text");
+
+                                    b2.HasKey("SocialNetworksListVolunteerId", "Id")
+                                        .HasName("pk_volunteers");
+
+                                    b2.ToTable("volunteers", "core");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("SocialNetworksListVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_social_networks_list_volunteer_id");
+                                });
+
+                            b1.Navigation("Data");
+                        });
+
+                    b.Navigation("PaymentInfos");
+
+                    b.Navigation("SocialNetworks");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.PetPhoto", b =>
@@ -319,23 +320,6 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasConstraintName("fk_pet_photo_pets_pet_id");
                 });
 
-            modelBuilder.Entity("SocialNetworkVolunteer", b =>
-                {
-                    b.HasOne("Pet4U.Domain.SocialNetwork", null)
-                        .WithMany()
-                        .HasForeignKey("SocialNetworksId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_social_network_volunteer_social_network_social_networks_id");
-
-                    b.HasOne("Pet4U.Domain.Modules.Volunteer", null)
-                        .WithMany()
-                        .HasForeignKey("VolunteerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_social_network_volunteer_volunteers_volunteer_id");
-                });
-
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
                 {
                     b.Navigation("PetPhotos");
@@ -343,8 +327,6 @@ namespace Pet4U.Infrastructure.Migrations
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
                 {
-                    b.Navigation("PaymentInfos");
-
                     b.Navigation("Pets");
                 });
 #pragma warning restore 612, 618

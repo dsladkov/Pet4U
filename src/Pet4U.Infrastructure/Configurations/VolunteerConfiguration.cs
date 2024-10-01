@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Pet4U.Domain;
 using Pet4U.Domain.Modules;
 using Pet4U.Domain.Shared;
 
@@ -45,12 +46,17 @@ namespace Pet4U.Infrastructure
             .WithOne()
             .HasForeignKey("volunteer_Id");
 
-            builder.HasMany(v => v.SocialNetworks)
-                   .WithMany();
+            builder.OwnsOne(v => v.SocialNetworks, d => 
+            {
+              d.ToJson();
+              d.OwnsMany(d => d.Data);
+            });
 
-            builder.HasMany(m => m.PaymentInfos)
-                   .WithOne()
-                   .HasForeignKey("volunteer_id");
+            builder.OwnsOne(v => v.PaymentInfos, d => 
+            {
+              d.ToJson();
+              d.OwnsMany(d => d.Data);
+            });
         }
     }
 }
