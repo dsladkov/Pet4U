@@ -11,7 +11,4 @@ public record VolunteerId
 
   public static VolunteerId GetNew(Guid id) => new (id);
   public static VolunteerId GetEmpty() => new (Guid.Empty);
-
-  // ef core
-  //public static VolunteerId Create(Guid id) => new (id);
 }

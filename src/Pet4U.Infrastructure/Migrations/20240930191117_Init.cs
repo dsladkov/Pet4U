@@ -40,32 +40,12 @@ namespace Pet4U.Infrastructure.Migrations
                     phone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
-                    midle_name = table.Column<string>(type: "text", nullable: false)
+                    midle_name = table.Column<string>(type: "text", nullable: false),
+                    PaymentInfos = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_volunteers", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "payment_info",
-                schema: "core",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: false),
-                    description = table.Column<string>(type: "text", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_payment_info", x => x.id);
-                    table.ForeignKey(
-                        name: "fk_payment_info_volunteers_volunteer_id",
-                        column: x => x.volunteer_id,
-                        principalSchema: "core",
-                        principalTable: "volunteers",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -89,8 +69,7 @@ namespace Pet4U.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     create_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
-                    volunteer_id1 = table.Column<Guid>(type: "uuid", nullable: true)
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -98,12 +77,6 @@ namespace Pet4U.Infrastructure.Migrations
                     table.ForeignKey(
                         name: "fk_pets_volunteers_volunteer_id",
                         column: x => x.volunteer_id,
-                        principalSchema: "core",
-                        principalTable: "volunteers",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "fk_pets_volunteers_volunteer_id1",
-                        column: x => x.volunteer_id1,
                         principalSchema: "core",
                         principalTable: "volunteers",
                         principalColumn: "id");
@@ -158,12 +131,6 @@ namespace Pet4U.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_payment_info_volunteer_id",
-                schema: "core",
-                table: "payment_info",
-                column: "volunteer_id");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_pet_photo_pet_id",
                 schema: "core",
                 table: "pet_photo",
@@ -176,12 +143,6 @@ namespace Pet4U.Infrastructure.Migrations
                 column: "volunteer_id");
 
             migrationBuilder.CreateIndex(
-                name: "ix_pets_volunteer_id1",
-                schema: "core",
-                table: "pets",
-                column: "volunteer_id1");
-
-            migrationBuilder.CreateIndex(
                 name: "ix_social_network_volunteer_volunteer_id",
                 schema: "core",
                 table: "social_network_volunteer",
@@ -191,10 +152,6 @@ namespace Pet4U.Infrastructure.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "payment_info",
-                schema: "core");
-
             migrationBuilder.DropTable(
                 name: "pet_photo",
                 schema: "core");
