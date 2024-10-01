@@ -25,7 +25,7 @@ namespace Pet4U.Domain.Modules
       Description = description;
       Experience = experience;
       Phone = phone;
-      SocialNetworks =  SocialNetworksList.Create(socialNetworks.ToList());//new(){Data = socialNetworks.ToList()};
+      SocialNetworks =  SocialNetworksList.Create(socialNetworks.ToList());
       PaymentInfos =   PaymentInfoList.Create(paymentInfos.ToList());
     }
     public FullName FullName { get; private set; } = null!;
