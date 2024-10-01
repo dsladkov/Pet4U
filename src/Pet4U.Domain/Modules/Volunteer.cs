@@ -16,8 +16,8 @@ namespace Pet4U.Domain.Modules
         string description, 
         int experience, 
         string phone,
-        IEnumerable<SocialNetwork> socialNetworks,
-        IEnumerable<PaymentInfo> paymentInfos
+        IReadOnlyCollection<SocialNetwork> socialNetworks,
+        IReadOnlyCollection<PaymentInfo> paymentInfos
       ) : base(id)
     {
       FullName = fullName;
@@ -25,8 +25,8 @@ namespace Pet4U.Domain.Modules
       Description = description;
       Experience = experience;
       Phone = phone;
-      SocialNetworks =  SocialNetworksList.Create(socialNetworks.ToList());
-      PaymentInfos =   PaymentInfoList.Create(paymentInfos.ToList());
+      SocialNetworks =  new(socialNetworks);
+      PaymentInfos =   new(paymentInfos);
     }
     public FullName FullName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
