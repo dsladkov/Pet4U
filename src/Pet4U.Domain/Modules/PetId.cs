@@ -9,9 +9,9 @@ public record PetId
 
   public Guid Value { get; }
 
-  public static PetId GetNew(Guid id) => new (id);
+  public static PetId GetNew() => new (Guid.NewGuid());
   public static PetId GetEmpty() => new (Guid.Empty);
 
   // ef core
-  //public static PetId Create(Guid id) => new (id);
+  public static PetId Create(Guid id) => new (id);
 }

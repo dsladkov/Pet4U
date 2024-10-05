@@ -14,7 +14,7 @@ namespace Pet4U.Infrastructure
             builder.Property(v => v.Id)
               .HasConversion(
                 Id => Id.Value,
-                value => PetId.GetNew(value)
+                value => PetId.Create(value)
               );
 
             builder.Property(v => v.Nickname)
@@ -67,6 +67,25 @@ namespace Pet4U.Infrastructure
 
             builder.Property(v => v.CreateDate)
             .IsRequired(true);
+
+            builder.ComplexProperty(p => p.PetData, pdb =>
+            {
+              pdb.Property(d => d.SpeciesId)
+              .HasConversion(
+                value => value.Value,
+                value => SpeciesId.Create(value)
+              );
+              pdb.Property(d => d.BreedId)
+              .IsRequired();
+            });
+
+            // builder.ComplexProperty(p => p.SpeciesId, pb =>
+            // {
+            //     pb.Property(p => p.Value)
+            //         .HasColumnName("species_id");
+            // });
+
+            // builder.Property(p => p.BreedId);
         }
     }
 }
