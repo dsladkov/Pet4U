@@ -15,7 +15,7 @@ namespace Pet4U.Infrastructure
             builder.Property(v => v.Id)
               .HasConversion(
                 Id => Id.Value,
-                value => VolunteerId.GetNew(value)
+                value => VolunteerId.Create(value)
               );
 
             builder.ComplexProperty(v => v.FullName, ba =>

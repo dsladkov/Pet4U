@@ -14,6 +14,7 @@ namespace Pet4U.Domain.Modules
     public Pet
     (
       PetId id,
+      PetData petData,
       string nickname, 
       string species, 
       string description,
@@ -31,6 +32,7 @@ namespace Pet4U.Domain.Modules
       DateOnly createDate
     ) : base(id)
     {
+      PetData = petData;
       Nickname = nickname;
       Species = species;
       Description = description;
@@ -47,7 +49,8 @@ namespace Pet4U.Domain.Modules
       Status = status;
       CreateDate = createDate;
     }
-    
+
+    public PetData PetData { get; private set; } = null!;
     public string Nickname { get; private set; } = null!;
     public string Species { get; private set; } = null!;
     public string Description { get; private set; } = null!;
@@ -63,6 +66,7 @@ namespace Pet4U.Domain.Modules
     public bool IsVaccinated { get; private set; }
     public Status Status { get; private set; }
     public DateOnly CreateDate { get; private set; }
+    
     public IReadOnlyCollection<PetPhoto> PetPhotos => _petPhoto;
 
     public void AddPetPhoto(PetPhoto petPhoto) => _petPhoto.Add(petPhoto);
