@@ -1,0 +1,10 @@
+{
+  "configurations": [
+    {
+      "name": "C#: Pet4U.API [Default Configuration]",
+      "type": "dotnet",
+      "request": "launch",
+      "projectPath": "${workspaceFolder}/Pet4U.API/Pet4U.API.csproj"
+    }
+  ]
+}

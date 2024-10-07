@@ -1,3 +1,5 @@
+using System.Data;
+using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Pet4U.Domain;
@@ -32,15 +34,23 @@ namespace Pet4U.Infrastructure
             .IsRequired()
             .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
 
-            builder.Property(v => v.Description)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
+            builder.ComplexProperty(v => v.Description, db =>
+            {
+              db.Property(d => d.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH)
+                .HasColumnName("description");
+            });
 
             builder.Property(v => v.Experience);
 
-            builder.Property(v => v.Phone)
-            .IsRequired()
-            .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
+            builder.ComplexProperty(v => v.Phone, bp =>
+            {
+              bp.Property(p => p.Value)
+                .IsRequired()
+                .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH)
+                .HasColumnName("phone");
+            });
 
             builder.HasMany(v => v.Pets)
             .WithOne()

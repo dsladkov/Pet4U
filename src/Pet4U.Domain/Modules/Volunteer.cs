@@ -8,16 +8,16 @@ namespace Pet4U.Domain.Modules
     private List<Pet> _pets = [];
     private Volunteer(VolunteerId id) : base(id){}
 
-    public Volunteer
+    private Volunteer
       (
         VolunteerId id, 
         FullName fullName, 
         string email, 
-        string description, 
+        Description description, 
         int experience, 
-        string phone,
-        IReadOnlyCollection<SocialNetwork> socialNetworks,
-        IReadOnlyCollection<PaymentInfo> paymentInfos
+        Phone phone,
+        IReadOnlyCollection<SocialNetwork>? socialNetworks,
+        IReadOnlyCollection<PaymentInfo>? paymentInfos
       ) : base(id)
     {
       FullName = fullName;
@@ -30,9 +30,9 @@ namespace Pet4U.Domain.Modules
     }
     public FullName FullName { get; private set; } = null!;
     public string Email { get; private set; } = null!;
-    public string Description { get; private set; } = null!;
+    public Description Description { get; private set; } = null!;
     public int? Experience { get; private set; }
-    public string Phone { get; set; } = null!;
+    public Phone Phone { get; private set; } = null!;
 
     public SocialNetworksList? SocialNetworks { get; private set; }
     public PaymentInfoList? PaymentInfos { get; private set; }
@@ -43,5 +43,30 @@ namespace Pet4U.Domain.Modules
     public int HomeFoundedPetsCounter() =>  Counter(Status.FoundHome);
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
+
+    public static Volunteer Create
+    (
+      VolunteerId id,
+      FullName fullName,
+      string email,
+      Description description,
+      int experience,
+      Phone phone,
+      IReadOnlyCollection<SocialNetwork>? socialNetworks,
+      IReadOnlyCollection<PaymentInfo>? paymentInfos
+      )
+    {
+      return new Volunteer
+      (
+        id: id, 
+        fullName: fullName, 
+        email: email, 
+        description: description, 
+        experience: experience,
+        phone: phone,
+        socialNetworks: socialNetworks, 
+        paymentInfos: paymentInfos
+      );
+    }
   }
 }
