@@ -14,9 +14,20 @@ public record CreateVolunteerRequest
   string Phone,
   IReadOnlyCollection<PaymentInfo>? PaymentInfos,
   IReadOnlyCollection<SocialNetwork>? SocialNetworks
-);
+)
+{
+  public CreateVolunteerCommand ToCommand() => new(FirstName, LastName, MiddleName, Email, Description, Experience, Phone, PaymentInfos, SocialNetworks);
+}
 
 public record CreateVolunteerCommand
 (
-  CreateVolunteerRequest CreateVolunteerRequest
+  string FirstName,
+  string LastName,
+  string MiddleName,
+  string Email,
+  string Description,
+  int Experience,
+  string Phone,
+  IReadOnlyCollection<PaymentInfo>? PaymentInfos,
+  IReadOnlyCollection<SocialNetwork>? SocialNetworks
 );

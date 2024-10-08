@@ -1,6 +1,6 @@
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Infrastructure;
-using Pet4U.Infrastructure.VolunteerRepository;
+using Pet4U.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,7 +8,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
 builder.Services.AddScoped<CreateVolunteerHandler>();
-builder.Services.AddScoped<IVolunteerRepository, VolunteerRepository>();
+builder.Services.AddScoped<IVolunteersRepository, VolunteersRepository>();
+builder.Services.AddScoped<ICreateVolunteerHandler, CreateVolunteerHandler>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

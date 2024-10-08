@@ -8,7 +8,10 @@ public record Phone
   {
     Value = value;
   }
-  public static Phone Create(string value)
-        => new Phone(value);
-  
+  public static Result<Phone> Create(string value)
+  {
+    if(string.IsNullOrWhiteSpace(value) || value.Length > Constants.MAX_LOW_TEXT_LENGTH)
+      return "Ivalid phone info";
+    return new Phone(value);
+  }
 }

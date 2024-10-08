@@ -6,8 +6,10 @@ public record Description
 
   public Description(string value) => Value = value;
 
-  public static Description Create(string value)
+  public static Result<Description> Create(string value)
   {
+    if(string.IsNullOrWhiteSpace(value) || value.Length > Constants.MAX_HIGH_TEXT_LENGTH)
+      return "Invalid description";
     return new Description(value);
   }
 }

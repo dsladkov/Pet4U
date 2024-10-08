@@ -44,7 +44,7 @@ namespace Pet4U.Domain.Modules
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
 
-    public static Volunteer Create
+    public static Result<Volunteer> Create
     (
       VolunteerId id,
       FullName fullName,
@@ -56,6 +56,17 @@ namespace Pet4U.Domain.Modules
       IReadOnlyCollection<PaymentInfo>? paymentInfos
       )
     {
+      // if(id is null)
+      //   return "Invalid VolunterId";
+      
+      // if(fullName is null)
+      //   return "Invalid FullName";
+
+      // if(description is null)
+      //   return "Invalid description";
+      // if(phone is null)
+      //   return "Invalid phone number";
+
       return new Volunteer
       (
         id: id, 
@@ -68,5 +79,7 @@ namespace Pet4U.Domain.Modules
         paymentInfos: paymentInfos
       );
     }
+
+    public static implicit operator Result<Guid>(Volunteer volunteer) => volunteer.Id.Value;
   }
 }

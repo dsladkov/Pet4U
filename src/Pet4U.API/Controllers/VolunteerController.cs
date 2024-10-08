@@ -9,10 +9,10 @@ namespace Pet4U.API;
 [Route("[controller]")]
 public class VolunteerController : ControllerBase
 {
-  private readonly CreateVolunteerHandler _createVolunteerHandler;
+  private readonly ICreateVolunteerHandler _createVolunteerHandler;
 
 
-  public VolunteerController(CreateVolunteerHandler createVolunteerHandler)
+  public VolunteerController(ICreateVolunteerHandler createVolunteerHandler)
   {
     _createVolunteerHandler = createVolunteerHandler;
   }
@@ -21,10 +21,13 @@ public class VolunteerController : ControllerBase
   [HttpPost]
   public async Task<IActionResult> Create([FromBody] CreateVolunteerRequest volunteer, CancellationToken cancellationToken = default)
   {
-    var volunteerCommand = new CreateVolunteerCommand(volunteer);
+    var volunteerCommand = volunteer.ToCommand();
 
-     var result = await _createVolunteerHandler.HandleAsync(volunteerCommand, cancellationToken);
+    var result = await _createVolunteerHandler.HandleAsync(volunteerCommand, cancellationToken);
     
-    return Ok(result);
+    if(result.IsFailure)
+      return BadRequest(result.Error);
+    
+    return Ok(result.Value);
   }
 }
