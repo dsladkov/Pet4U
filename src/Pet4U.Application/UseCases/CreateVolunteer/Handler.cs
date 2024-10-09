@@ -13,7 +13,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
   {
     _volunteerRepository = volunteerRepository;
   }
-  public async Task<Result<Guid>> HandleAsync
+  public async Task<Result<Guid, Error>> HandleAsync
   (
     CreateVolunteerCommand command,
     CancellationToken cancellationToken
@@ -27,7 +27,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
     );
 
     if (fullName.IsFailure)
-      return fullName.Error!;
+      return fullName.Error;
 
     var description = Description.Create(command.Description);
     if (description.IsFailure)

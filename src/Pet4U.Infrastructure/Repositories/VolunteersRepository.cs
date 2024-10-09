@@ -15,7 +15,7 @@ public class VolunteersRepository : IVolunteersRepository
   }
 
 
-  public async Task<Result<Guid>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+  public async Task<Result<Guid, Error>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
   {
     await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 

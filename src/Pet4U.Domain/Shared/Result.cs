@@ -38,3 +38,23 @@ public class Result<TValue> : Result
   public static implicit operator Result<TValue>(TValue value) => new(value, true, null);
   public static implicit operator Result<TValue>(string error) => new(default!, false, error);
 }
+
+public class Result<TValue, TError> : Result<TValue>
+{
+
+  private readonly TError _error;
+  public Result(TValue value, TError error, bool isSuccess, string? errorString) : base(value, isSuccess, errorString)
+  {
+    _error = error;
+  }
+
+  public new TError Error => IsFailure ? _error : default!;
+
+
+  public static new Result<TValue, TError> Success( TValue value ) => new(value, default! ,true, null);
+  public static Result<TValue, TError> Failure ( TError error, string errorString ) => new(default!, error, false, errorString);
+
+  public static implicit operator Result<TValue, TError>(TValue value) => new(value, default!, true, null);
+  public static implicit operator Result<TValue, TError>(TError error) => new(default!, error, false, "error");
+
+}
