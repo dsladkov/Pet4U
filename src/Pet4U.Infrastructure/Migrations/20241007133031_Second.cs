@@ -5,7 +5,7 @@
 namespace Pet4U.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class Fifth : Migration
+    public partial class Second : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -15,17 +15,17 @@ namespace Pet4U.Infrastructure.Migrations
                 name: "core");
 
             migrationBuilder.CreateTable(
-                name: "social_network",
+                name: "species",
                 schema: "core",
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "text", nullable: false),
-                    link = table.Column<string>(type: "text", nullable: false)
+                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_social_network", x => x.id);
+                    table.PrimaryKey("pk_species", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,11 +41,33 @@ namespace Pet4U.Infrastructure.Migrations
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
                     midle_name = table.Column<string>(type: "text", nullable: false),
-                    PaymentInfos = table.Column<string>(type: "jsonb", nullable: true)
+                    PaymentInfos = table.Column<string>(type: "jsonb", nullable: true),
+                    SocialNetworks = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_volunteers", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "breed",
+                schema: "core",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    breed_id = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_breed", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_breed_species_breed_id",
+                        column: x => x.breed_id,
+                        principalSchema: "core",
+                        principalTable: "species",
+                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -69,7 +91,9 @@ namespace Pet4U.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     create_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true)
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
+                    pet_data_breed_id = table.Column<Guid>(type: "uuid", nullable: false),
+                    pet_data_species_id = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -80,33 +104,6 @@ namespace Pet4U.Infrastructure.Migrations
                         principalSchema: "core",
                         principalTable: "volunteers",
                         principalColumn: "id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "social_network_volunteer",
-                schema: "core",
-                columns: table => new
-                {
-                    social_networks_id = table.Column<Guid>(type: "uuid", nullable: false),
-                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("pk_social_network_volunteer", x => new { x.social_networks_id, x.volunteer_id });
-                    table.ForeignKey(
-                        name: "fk_social_network_volunteer_social_network_social_networks_id",
-                        column: x => x.social_networks_id,
-                        principalSchema: "core",
-                        principalTable: "social_network",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "fk_social_network_volunteer_volunteers_volunteer_id",
-                        column: x => x.volunteer_id,
-                        principalSchema: "core",
-                        principalTable: "volunteers",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -131,6 +128,12 @@ namespace Pet4U.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "ix_breed_breed_id",
+                schema: "core",
+                table: "breed",
+                column: "breed_id");
+
+            migrationBuilder.CreateIndex(
                 name: "ix_pet_photo_pet_id",
                 schema: "core",
                 table: "pet_photo",
@@ -141,31 +144,25 @@ namespace Pet4U.Infrastructure.Migrations
                 schema: "core",
                 table: "pets",
                 column: "volunteer_id");
-
-            migrationBuilder.CreateIndex(
-                name: "ix_social_network_volunteer_volunteer_id",
-                schema: "core",
-                table: "social_network_volunteer",
-                column: "volunteer_id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "breed",
+                schema: "core");
+
+            migrationBuilder.DropTable(
                 name: "pet_photo",
                 schema: "core");
 
             migrationBuilder.DropTable(
-                name: "social_network_volunteer",
+                name: "species",
                 schema: "core");
 
             migrationBuilder.DropTable(
                 name: "pets",
-                schema: "core");
-
-            migrationBuilder.DropTable(
-                name: "social_network",
                 schema: "core");
 
             migrationBuilder.DropTable(

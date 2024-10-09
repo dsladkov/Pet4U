@@ -192,12 +192,6 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("id");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
-                        .HasColumnName("description");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -208,11 +202,16 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("experience");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("phone");
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "Pet4U.Domain.Modules.Volunteer.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "Pet4U.Domain.Modules.Volunteer.FullName#FullName", b1 =>
                         {
@@ -232,6 +231,17 @@ namespace Pet4U.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("midle_name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Phone", "Pet4U.Domain.Modules.Volunteer.Phone#Phone", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("phone");
                         });
 
                     b.HasKey("Id")

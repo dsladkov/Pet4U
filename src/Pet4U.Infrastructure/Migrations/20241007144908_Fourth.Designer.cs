@@ -13,8 +13,8 @@ using Pet4U.Infrastructure;
 namespace Pet4U.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240930192613_Third")]
-    partial class Third
+    [Migration("20241007144908_Fourth")]
+    partial class Fourth
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,6 +26,36 @@ namespace Pet4U.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Pet4U.Domain.Modules.Breed", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("description");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("title");
+
+                    b.Property<Guid?>("breed_id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("breed_id");
+
+                    b.HasKey("Id")
+                        .HasName("pk_breed");
+
+                    b.HasIndex("breed_id")
+                        .HasDatabaseName("ix_breed_breed_id");
+
+                    b.ToTable("breed", "core");
+                });
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
                 {
@@ -113,6 +143,19 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("volunteer_id");
 
+                    b.ComplexProperty<Dictionary<string, object>>("PetData", "Pet4U.Domain.Modules.Pet.PetData#PetData", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<Guid>("BreedId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("pet_data_breed_id");
+
+                            b1.Property<Guid>("SpeciesId")
+                                .HasColumnType("uuid")
+                                .HasColumnName("pet_data_species_id");
+                        });
+
                     b.HasKey("Id")
                         .HasName("pk_pets");
 
@@ -122,7 +165,7 @@ namespace Pet4U.Infrastructure.Migrations
                     b.ToTable("pets", "core");
                 });
 
-            modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
+            modelBuilder.Entity("Pet4U.Domain.Modules.Species", b =>
                 {
                     b.Property<Guid>("Id")
                         .HasColumnType("uuid")
@@ -134,6 +177,24 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("character varying(2000)")
                         .HasColumnName("description");
 
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("pk_species");
+
+                    b.ToTable("species", "core");
+                });
+
+            modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -144,11 +205,16 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("experience");
 
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
-                        .HasColumnName("phone");
+                    b.ComplexProperty<Dictionary<string, object>>("Description", "Pet4U.Domain.Modules.Volunteer.Description#Description", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(2000)
+                                .HasColumnType("character varying(2000)")
+                                .HasColumnName("description");
+                        });
 
                     b.ComplexProperty<Dictionary<string, object>>("FullName", "Pet4U.Domain.Modules.Volunteer.FullName#FullName", b1 =>
                         {
@@ -168,6 +234,17 @@ namespace Pet4U.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasColumnType("text")
                                 .HasColumnName("midle_name");
+                        });
+
+                    b.ComplexProperty<Dictionary<string, object>>("Phone", "Pet4U.Domain.Modules.Volunteer.Phone#Phone", b1 =>
+                        {
+                            b1.IsRequired();
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("character varying(100)")
+                                .HasColumnName("phone");
                         });
 
                     b.HasKey("Id")
@@ -203,6 +280,14 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasDatabaseName("ix_pet_photo_pet_id");
 
                     b.ToTable("pet_photo", "core");
+                });
+
+            modelBuilder.Entity("Pet4U.Domain.Modules.Breed", b =>
+                {
+                    b.HasOne("Pet4U.Domain.Modules.Species", null)
+                        .WithMany("Breeds")
+                        .HasForeignKey("breed_id")
+                        .HasConstraintName("fk_breed_species_breed_id");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
@@ -323,6 +408,11 @@ namespace Pet4U.Infrastructure.Migrations
             modelBuilder.Entity("Pet4U.Domain.Modules.Pet", b =>
                 {
                     b.Navigation("PetPhotos");
+                });
+
+            modelBuilder.Entity("Pet4U.Domain.Modules.Species", b =>
+                {
+                    b.Navigation("Breeds");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.Modules.Volunteer", b =>
