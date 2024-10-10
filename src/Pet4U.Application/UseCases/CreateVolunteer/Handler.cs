@@ -27,7 +27,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
     );
 
     if (fullName.IsFailure)
-      return fullName.Error!;
+      return fullName.Error;
 
     var description = Description.Create(command.Description);
     if (description.IsFailure)

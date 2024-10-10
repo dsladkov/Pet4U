@@ -9,7 +9,7 @@ public record Description
   public static Result<Description> Create(string value)
   {
     if(string.IsNullOrWhiteSpace(value) || value.Length > Constants.MAX_HIGH_TEXT_LENGTH)
-      return "Invalid description";
+      return Errors.General.ValueIsInvalid(nameof(Description));
     return new Description(value);
   }
 }
