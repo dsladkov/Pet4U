@@ -11,12 +11,12 @@ public static class Errors
     public static Error NotFound(Guid? id = null)
     {
       var forId = id == null ? "": $"for Id '{id}'";
-      return Error.Validation("record.not.found", $"record not found{forId}");
+      return Error.NotFound("record.not.found", $"record not found{forId}");
     }
-    public static Error ValueIsRequired(string? name = null)
+    public static Error LengthIsInvalid(string? name = null)
     {
-      var label = name ?? "";
-      return Error.Validation("length.is.invalid", $"invalid {label} length ");
+      var label = name + " " ?? "";
+      return Error.Validation("length.is.invalid", $"invalid {label}length ");
     }
   }
 }
