@@ -8,7 +8,7 @@ public record Phone
   {
     Value = value;
   }
-  public static Result<Phone, Error> Create(string value)
+  public static Result<Phone> Create(string value)
   {
     if(string.IsNullOrWhiteSpace(value) || value.Length > Constants.MAX_LOW_TEXT_LENGTH)
       return Errors.General.ValueIsInvalid(nameof(Phone)); //Error.Validation("value.is.invalid", "Ivalid phone info");

@@ -16,7 +16,7 @@ namespace Pet4U.Domain
 
     }
 
-    public static Result<FullName, Error> Create(string firstName, string lastName, string middleName)
+    public static Result<FullName> Create(string firstName, string lastName, string middleName)
     {
       if(string.IsNullOrWhiteSpace(firstName) || firstName.Length > Constants.MAX_LOW_TEXT_LENGTH)
         return Error.Validation("value.is.invalid", "Invalid first name wasn't accepted");

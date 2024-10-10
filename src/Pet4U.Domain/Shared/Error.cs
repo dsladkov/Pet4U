@@ -17,6 +17,9 @@ public record Error
   public static Error NotFound(string code, string message) => new Error(code, message, ErrorType.NotFound);
   public static Error Failure(string code, string message) => new Error(code, message, ErrorType.Failure);
   public static Error Conflict(string code, string message) => new Error(code, message, ErrorType.Conflict);
+  public static Error None() => new Error("","", ErrorType.None);
+
+  public static implicit operator ErrorType(Error error) => error.Type;
 
 }
 

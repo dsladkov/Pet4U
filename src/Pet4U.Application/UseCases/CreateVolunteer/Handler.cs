@@ -13,7 +13,7 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
   {
     _volunteerRepository = volunteerRepository;
   }
-  public async Task<Result<Guid, Error>> HandleAsync
+  public async Task<Result<Guid>> HandleAsync
   (
     CreateVolunteerCommand command,
     CancellationToken cancellationToken

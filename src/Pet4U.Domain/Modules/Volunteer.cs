@@ -44,7 +44,7 @@ namespace Pet4U.Domain.Modules
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
 
-    public static Result<Volunteer, Error> Create
+    public static Result<Volunteer> Create
     (
       VolunteerId id,
       FullName fullName,
@@ -80,6 +80,6 @@ namespace Pet4U.Domain.Modules
       );
     }
 
-    public static implicit operator Result<Guid, Error>(Volunteer volunteer) => volunteer.Id.Value;
+    public static implicit operator Result<Guid>(Volunteer volunteer) => volunteer.Id.Value;
   }
 }

@@ -15,7 +15,7 @@ public class VolunteersRepository : IVolunteersRepository
   }
 
 
-  public async Task<Result<Guid, Error>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+  public async Task<Result<Guid>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
   {
     await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
@@ -31,7 +31,7 @@ public class VolunteersRepository : IVolunteersRepository
               .FirstOrDefaultAsync(v => v.Id == volunteerId, cancellationToken);
 
     if(volunteerId is null)
-      return "Volunteer hasn't bee found ";
+      return Errors.General.NotFound(volunteerId!);//"Volunteer hasn't bee found ";
 
     return volunteer;
   }
