@@ -11,7 +11,8 @@ public record Phone
   public static Result<Phone> Create(string value)
   {
     if(string.IsNullOrWhiteSpace(value) || value.Length > Constants.MAX_LOW_TEXT_LENGTH)
-      return Errors.General.ValueIsInvalid(nameof(Phone)); //Error.Validation("value.is.invalid", "Ivalid phone info");
+      return Errors.General.ValueIsInvalid(nameof(Phone));
+      
     return new Phone(value);
   }
 }

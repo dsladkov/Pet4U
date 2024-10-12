@@ -4,7 +4,7 @@ public class Result
 {
   protected Result(bool isSuccess, Error error)
   {
-    if((isSuccess && error != ErrorType.None) || (!isSuccess && error == ErrorType.None))
+    if((isSuccess && error != Type.None) || (!isSuccess && error == Type.None))
       throw new InvalidOperationException();
     
     IsSuccess = isSuccess;
@@ -27,7 +27,7 @@ public class Result<TValue> : Result
 
   public TValue Value => IsSuccess ? _value : throw new InvalidOperationException("The value of a failure cannot be accessed");
 
-  public Result(TValue value, bool isSuccess, Error error) : base(isSuccess, error)
+  protected Result(TValue value, bool isSuccess, Error error) : base(isSuccess, error)
   {
     _value = value;
   }

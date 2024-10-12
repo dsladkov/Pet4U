@@ -6,7 +6,7 @@ public class Species : Entity<SpeciesId>
 {
   public Species(SpeciesId id) : base(id){}
 
-  public Species
+  private Species
   (
     SpeciesId id, 
     string title,
@@ -25,5 +25,28 @@ public class Species : Entity<SpeciesId>
 
   public string Title { get; private set; } = null!;
   public string Description { get; private set; } = null!;
+
+  public static Result<Species> Create
+  (
+    SpeciesId id,
+    string title,
+    string description, 
+    List<Breed> breeds
+  )
+  {
+    if(string.IsNullOrEmpty(title))
+      return Errors.General.ValueIsInvalid("title");
+
+    if(title.Length > Constants.MAX_LOW_TEXT_LENGTH)
+      return Errors.General.LengthIsInvalid("title");
+
+    if(string.IsNullOrWhiteSpace(description))
+      return Errors.General.ValueIsInvalid("description");
+
+    if(description.Length > Constants.MAX_HIGH_TEXT_LENGTH)
+      return Errors.General.LengthIsInvalid("description");
+    
+    return new Species(id, title, description, breeds);
+  }
 
 }

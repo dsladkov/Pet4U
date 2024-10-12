@@ -18,7 +18,7 @@ namespace Pet4U.Infrastructure
               .HasConversion(
                 Id => Id.Value,
                 value => VolunteerId.Create(value)
-              );
+              ).HasColumnName("volunteer_id");
 
             builder.ComplexProperty(v => v.FullName, ba =>
             {

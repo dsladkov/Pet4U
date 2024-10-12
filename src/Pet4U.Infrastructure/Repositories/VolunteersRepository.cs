@@ -31,7 +31,7 @@ public class VolunteersRepository : IVolunteersRepository
               .FirstOrDefaultAsync(v => v.Id == volunteerId, cancellationToken);
 
     if(volunteerId is null)
-      return Errors.General.NotFound(volunteerId!);//"Volunteer hasn't bee found ";
+      return Errors.General.NotFound(volunteerId!);
 
     return volunteer;
   }
