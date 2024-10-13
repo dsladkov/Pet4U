@@ -1,4 +1,4 @@
-namespace Pet4U.Domain
+namespace Pet4U.Domain.Volunteers
 {
   public class PetPhoto
   {

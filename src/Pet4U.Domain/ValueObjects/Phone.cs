@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.Shared;
+namespace Pet4U.Domain.ValueObjects;
 
 public record Phone
 {

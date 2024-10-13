@@ -1,4 +1,6 @@
-namespace Pet4U.Domain;
+using Pet4U.Domain.Volunteers;
+
+namespace Pet4U.Domain.ValueObjects;
 
 public record SocialNetworksList 
 {

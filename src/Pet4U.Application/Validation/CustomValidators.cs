@@ -1,5 +1,5 @@
 using FluentValidation;
-using Pet4U.Domain.Shared;
+using Pet4U.Domain.ValueObjects;
 
 namespace Pet4U.Application.Validation;
 

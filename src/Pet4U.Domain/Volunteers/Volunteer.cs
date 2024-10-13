@@ -1,7 +1,8 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Pet4U.Domain.Shared;
+using Pet4U.Domain.Ids;
+using Pet4U.Domain.ValueObjects;
 
-namespace Pet4U.Domain.Modules
+namespace Pet4U.Domain.Volunteers
 {
   public sealed class Volunteer : Entity<VolunteerId>
   {

@@ -1,6 +1,6 @@
-using Pet4U.Domain.Modules;
+using Pet4U.Domain;
 
-namespace Pet4U.Domain
+namespace Pet4U.Domain.Volunteers
 {
   //Part of the JSON column
   public record PaymentInfo

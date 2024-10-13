@@ -1,6 +1,7 @@
-using Pet4U.Domain.Shared;
+using Pet4U.Domain.Species;
+using Pet4U.Domain.ValueObjects;
 
-namespace Pet4U.Domain.Modules;
+namespace Pet4U.Domain.Species;
 
 public class Breed : Entity<Guid>
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using Pet4U.Domain.Shared;
+using Pet4U.Domain.ValueObjects;
 using Pet4U.Response;
-using Type = Pet4U.Domain.Shared.Type;
+using Type = Pet4U.Domain.ValueObjects.Type;
 
 namespace Pet4U.API.Extensions;
 

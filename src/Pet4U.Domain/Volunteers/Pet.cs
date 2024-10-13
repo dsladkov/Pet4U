@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
-using Pet4U.Domain.Modules;
-using Pet4U.Domain.Shared;
-
-namespace Pet4U.Domain.Modules
+using Pet4U.Domain.Ids;
+using Pet4U.Domain.ValueObjects;
+namespace Pet4U.Domain.Volunteers
 {
   public class Pet : Entity<PetId>
   {

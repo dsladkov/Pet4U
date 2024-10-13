@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.Modules;
+namespace Pet4U.Domain.Ids;
 public record SpeciesId
 {
   private SpeciesId(Guid value)
