@@ -3,7 +3,7 @@ using Pet4U.Domain.Shared;
 
 namespace Pet4U.Domain.Modules
 {
-  public class Volunteer : Entity<VolunteerId>
+  public sealed class Volunteer : Entity<VolunteerId>
   {
     private List<Pet> _pets = [];
     private Volunteer(VolunteerId id) : base(id){}

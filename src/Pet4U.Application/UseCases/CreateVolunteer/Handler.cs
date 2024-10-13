@@ -26,18 +26,18 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
       command.MiddleName
     );
 
-    if (fullName.IsFailure)
-      return fullName.Error;
+    // if (fullName.IsFailure)
+    //   return fullName.Error;
 
     var description = Description.Create(command.Description);
 
-    if (description.IsFailure)
-      return description.Error!;
+    // if (description.IsFailure)
+    //   return description.Error!;
 
     var phoneResult = Phone.Create(command.Phone);
-    
-    if (phoneResult.IsFailure)
-      return phoneResult.Error!;
+
+    // if (phoneResult.IsFailure)
+    //   return phoneResult.Error!;
 
     var volunteer = Volunteer.Create
     (

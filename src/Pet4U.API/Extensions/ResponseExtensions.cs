@@ -20,8 +20,14 @@ public static class ResponseExtensions
       _ => StatusCodes.Status500InternalServerError,
       //ErrorType.None => StatusCodes.Status200OK,
     };
+    var responseError = new ResponseError(error.Code, error.Message, null);
 
-    var envelope = Envelope.Error(error);
+    // var listResponseError =  new List<ResponseError>();
+    // listResponseError.Add(responseError);
+
+    var envelope = Envelope.Error([responseError]);
+
+
     return new ObjectResult(envelope)
     {
       StatusCode = statusCode
@@ -44,7 +50,14 @@ public static class ResponseExtensions
       //ErrorType.None => StatusCodes.Status200OK,
     };
 
-    var envelope = Envelope.Error(result.Error); 
+    var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+
+    // var listResponseError =  new List<ResponseError>();
+    // listResponseError.Add(responseError);
+
+    var envelope = Envelope.Error([responseError]);
+
+    //var envelope = Envelope.Error(result.Error);
     return new ObjectResult(envelope) //result.Error
     {
       StatusCode = statusCode
