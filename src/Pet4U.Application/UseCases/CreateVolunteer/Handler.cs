@@ -30,10 +30,12 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
       return fullName.Error;
 
     var description = Description.Create(command.Description);
+
     if (description.IsFailure)
       return description.Error!;
 
     var phoneResult = Phone.Create(command.Phone);
+    
     if (phoneResult.IsFailure)
       return phoneResult.Error!;
 

@@ -4,12 +4,13 @@ using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Domain;
 using Pet4U.Domain.Modules;
 using Pet4U.Domain.Shared;
+using Pet4U.Response;
 
 namespace Pet4U.API;
 
-[ApiController]
-[Route("[controller]")]
-public class VolunteerController : ControllerBase
+//[ApiController]
+//[Route("[controller]")]
+public class VolunteerController : ApplicationController //ControllerBase
 {
   //private readonly ICreateVolunteerHandler _createVolunteerHandler;
 
@@ -26,9 +27,11 @@ public class VolunteerController : ControllerBase
 
     var result = await _createVolunteerHandler.HandleAsync(volunteerCommand, cancellationToken);
     
-    if(result.IsFailure)
-      return result.Error.ToResponse();
+    return result.ToResponse();
+
+    // if(result.IsFailure)
+    //   return result.Error.ToResponse(); //result.Error.ToResponse();
     
-    return Ok(result.Value);
+    // return Ok(result.Value); //Ok(Envelope.Ok(result ));
   }
 }
