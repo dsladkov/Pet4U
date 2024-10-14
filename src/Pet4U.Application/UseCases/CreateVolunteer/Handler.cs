@@ -1,6 +1,7 @@
-using Pet4U.Domain.Ids;
-using Pet4U.Domain.ValueObjects;
-using Pet4U.Domain.Volunteers;
+using Pet4U.Domain.PetManagement.AgregateRoot;
+using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.Shared.ValueObjects;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 

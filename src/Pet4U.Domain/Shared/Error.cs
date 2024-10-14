@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.ValueObjects;
+namespace Pet4U.Domain.Shared;
 
 public record Error
 {

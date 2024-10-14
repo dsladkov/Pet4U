@@ -1,8 +1,7 @@
 
-using Pet4U.Domain.ValueObjects;
-using static Pet4U.Domain.ValueObjects.Errors;
+using static Pet4U.Domain.Shared.Errors;
 
-namespace Pet4U.Domain.ValueObjects
+namespace Pet4U.Domain.Shared.ValueObjects
 {
   public record FullName
   {

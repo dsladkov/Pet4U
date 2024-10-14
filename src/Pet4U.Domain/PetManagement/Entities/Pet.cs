@@ -1,8 +1,8 @@
 using System;
-using System.Collections.Generic;
-using Pet4U.Domain.Ids;
-using Pet4U.Domain.ValueObjects;
-namespace Pet4U.Domain.Volunteers
+using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.Volunteers;
+namespace Pet4U.Domain.PetManagement.AgregateRoot
 {
   public class Pet : Entity<PetId>
   {

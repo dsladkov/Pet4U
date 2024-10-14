@@ -1,4 +1,5 @@
-using Pet4U.Domain.Ids;
+
+using Pet4U.Domain.Shared.Ids;
 
 namespace Pet4U.Domain.Volunteers;
 

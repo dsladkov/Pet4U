@@ -1,7 +1,8 @@
-using Pet4U.Domain.Ids;
-using Pet4U.Domain.ValueObjects;
+using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.SpeciesManagement.ValueObject;
 
-namespace Pet4U.Domain.Species;
+namespace Pet4U.Domain.SpeciesManagement.AgregateRoot;
 
 public class Species : Entity<SpeciesId>
 {

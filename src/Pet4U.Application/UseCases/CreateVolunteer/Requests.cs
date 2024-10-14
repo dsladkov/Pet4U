@@ -1,6 +1,7 @@
-using System.ComponentModel.DataAnnotations;
+
 using FluentValidation;
 using Pet4U.Application.Validation;
+using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
 

@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.API.Extensions;
 using Pet4U.Application.UseCases.CreateVolunteer;
+using Pet4U.Domain.Shared;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Response;
 

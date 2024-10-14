@@ -1,8 +1,11 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Pet4U.Domain.Ids;
-using Pet4U.Domain.ValueObjects;
 
-namespace Pet4U.Domain.Volunteers
+using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.Shared.ValueObjects;
+using Pet4U.Domain.ValueObjects;
+using Pet4U.Domain.Volunteers;
+
+namespace Pet4U.Domain.PetManagement.AgregateRoot
 {
   public sealed class Volunteer : Entity<VolunteerId>
   {

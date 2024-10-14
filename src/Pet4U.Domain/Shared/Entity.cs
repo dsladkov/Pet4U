@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.ValueObjects;
+namespace Pet4U.Domain.Shared;
 
 public abstract class Entity<T> where T : notnull
 {
