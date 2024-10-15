@@ -58,14 +58,21 @@ namespace Pet4U.Infrastructure
 
             builder.OwnsOne(v => v.SocialNetworks, d => 
             {
-              d.ToJson();
-              d.OwnsMany(d => d.Data);
+              d.ToJson("social_networks");
+              d.OwnsMany(d => d.Data, db => {
+                db.Property(d => d.Title);
+                db.Property(d => d.Link);
+              });
             });
 
             builder.OwnsOne(v => v.PaymentInfos, d => 
             {
-              d.ToJson();
-              d.OwnsMany(d => d.Data);
+              d.ToJson("payment_infos");
+              d.OwnsMany(d => d.Data, db =>
+              {
+                db.Property(d => d.Title);
+                db.Property(d => d.Description);
+              });
             });
         }
     }

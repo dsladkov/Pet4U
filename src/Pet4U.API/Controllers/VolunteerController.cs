@@ -21,24 +21,35 @@ public class VolunteerController : ApplicationController //ControllerBase
 
 
   [HttpPost]
-  public async Task<IActionResult> Create([FromServices] ICreateVolunteerHandler _createVolunteerHandler, [FromServices] IValidator<CreateVolunteerRequest> requestValidator,[FromBody] CreateVolunteerRequest volunteer, CancellationToken cancellationToken = default)
+  public async Task<IActionResult> Create
+  ([FromServices] ICreateVolunteerHandler _createVolunteerHandler, 
+  //[FromServices] IValidator<CreateVolunteerRequest> requestValidator,
+  [FromBody] CreateVolunteerRequest volunteer, 
+  CancellationToken cancellationToken = default)
   {
 
-    var validationResult = await requestValidator.ValidateAsync(volunteer, cancellationToken);
-    if(!validationResult.IsValid)
-    {
-      var validationErrors = validationResult.Errors;
-      List<ResponseError> errors = [];
+    // var validationResult = await requestValidator.ValidateAsync(volunteer, cancellationToken);
+    // if(!validationResult.IsValid)
+    // {
+    //   return validationResult.ToValidationErrorResponse();
+    //   // var validationErrors = validationResult.Errors;
+    //   // List<ResponseError> errors = [];
 
-      foreach(var validationError in validationErrors)
-      {
-        var error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage);
-        errors.Add(new(error.Code, error.Message, validationError.PropertyName));
-      }
+    //   // foreach(var validationError in validationErrors)
+    //   // {
+    //   //   var error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage);
+    //   //   errors.Add(new(error.Code, error.Message, validationError.PropertyName));
+    //   // }
 
-      var envelope = Envelope.Error(errors);
-      return BadRequest(envelope);
-    }
+    //   // var errors = from validationError in validationResult.Errors
+
+    //   //   let error  = Error.Deserialize(validationError.ErrorMessage) //Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
+    //   //   select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+    //   //   //select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+    //   // var envelope = Envelope.Error(errors);
+    //   // return BadRequest(envelope);
+    // }
 
     var volunteerCommand = volunteer.ToCommand();
 

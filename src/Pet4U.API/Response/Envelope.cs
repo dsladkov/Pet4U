@@ -2,7 +2,7 @@ namespace Pet4U.Response;
 
 //public record ResponseError(Error error, string?  InvalidField);
 
-public record ResponseError(string? errorCode, string? errorMessage,  string?  InvalidField);
+public record ResponseError(string? errorCode, string? errorMessage,  string? InvalidField);
 
 public record Envelope
 {
@@ -27,8 +27,8 @@ public record Envelope
   }
 
   public static Envelope Ok(object? result) =>
-    new Envelope(result, null);
+    new Envelope(result, []);
 
-  public static Envelope Error(List<ResponseError> errors) => //Error error, 
+  public static Envelope Error(IEnumerable<ResponseError> errors) => //Error error, 
     new Envelope(null, errors);  
 }

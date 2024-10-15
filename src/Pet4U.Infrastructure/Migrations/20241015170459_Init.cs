@@ -33,20 +33,20 @@ namespace Pet4U.Infrastructure.Migrations
                 schema: "core",
                 columns: table => new
                 {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    volunteer_id = table.Column<Guid>(type: "uuid", nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     experience = table.Column<int>(type: "integer", nullable: true),
-                    phone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
                     midle_name = table.Column<string>(type: "text", nullable: false),
+                    phone = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     PaymentInfos = table.Column<string>(type: "jsonb", nullable: true),
                     SocialNetworks = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("pk_volunteers", x => x.id);
+                    table.PrimaryKey("pk_volunteers", x => x.volunteer_id);
                 });
 
             migrationBuilder.CreateTable(
@@ -103,7 +103,7 @@ namespace Pet4U.Infrastructure.Migrations
                         column: x => x.volunteer_id,
                         principalSchema: "core",
                         principalTable: "volunteers",
-                        principalColumn: "id");
+                        principalColumn: "volunteer_id");
                 });
 
             migrationBuilder.CreateTable(

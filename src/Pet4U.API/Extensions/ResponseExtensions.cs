@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.Domain.Shared;
 using Pet4U.Response;
@@ -7,6 +8,35 @@ namespace Pet4U.API.Extensions;
 
 public static class ResponseExtensions
 {
+
+  public static ActionResult ToValidationErrorResponse(this FluentValidation.Results.ValidationResult validationResult)
+  {
+    if(validationResult.IsValid)
+      throw new InvalidOperationException("Result cannot be succeed");
+
+    
+      // var validationErrors = validationResult.Errors;
+      // List<ResponseError> errors = [];
+
+      // foreach(var validationError in validationErrors)
+      // {
+      //   var error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage);
+      //   errors.Add(new(error.Code, error.Message, validationError.PropertyName));
+      // }
+
+      var errors = from validationError in validationResult.Errors
+
+        let error  = Error.Deserialize(validationError.ErrorMessage) //Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
+        select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+        //select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+      var envelope = Envelope.Error(errors);
+      return new ObjectResult(envelope)
+      {
+        StatusCode = StatusCodes.Status400BadRequest
+      };
+
+  }
   public static ActionResult ToResponse(this Error error)
   {
     //ProblemDetails
