@@ -7,7 +7,7 @@ using Pet4U.Domain.SpeciesManagement.AgregateRoot;
 
 namespace Pet4U.Infrastructure;
 
-public class ApplicationDbContext() : DbContext //IConfiguration configuration
+public class ApplicationDbContext(IConfiguration configuration) : DbContext
 {
   private const string DATABASE = "Database";
 
@@ -23,7 +23,7 @@ public class ApplicationDbContext() : DbContext //IConfiguration configuration
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-      optionsBuilder.UseNpgsql("Server=localhost;Port=5432;Database=pet4u;User Id=postgres;Password=postgres;")
+      optionsBuilder.UseNpgsql(configuration.GetConnectionString( DATABASE))
         .UseSnakeCaseNamingConvention()
         .UseLoggerFactory( CreatedLoggerFactory() )
         .EnableSensitiveDataLogging();
