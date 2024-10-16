@@ -1,7 +1,7 @@
-using Pet4U.Domain.Shared;
+
 using static Pet4U.Domain.Shared.Errors;
 
-namespace Pet4U.Domain
+namespace Pet4U.Domain.Shared.ValueObjects
 {
   public record FullName
   {
@@ -20,7 +20,7 @@ namespace Pet4U.Domain
     public static Result<FullName> Create(string firstName, string lastName, string middleName)
     {
       if(string.IsNullOrWhiteSpace(firstName))
-        return Errors.General.ValueIsInvalid("first name");//Error.Validation("value.is.invalid", "Invalid first name wasn't accepted");
+        return General.ValueIsInvalid("first name");//Error.Validation("value.is.invalid", "Invalid first name wasn't accepted");
 
       if(firstName.Length > Constants.MAX_LOW_TEXT_LENGTH)
         return General.LengthIsInvalid(firstName);

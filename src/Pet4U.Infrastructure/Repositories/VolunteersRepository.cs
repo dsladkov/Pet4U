@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Pet4U.Application.UseCases.CreateVolunteer;
-using Pet4U.Domain.Modules;
+using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
 
 namespace Pet4U.Infrastructure.Repositories;
 

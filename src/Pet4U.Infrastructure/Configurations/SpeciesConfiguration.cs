@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Pet4U.Domain.Modules;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.SpeciesManagement.AgregateRoot;
 
 namespace Pet4U.Infrastructure 
 {

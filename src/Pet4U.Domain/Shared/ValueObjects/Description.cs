@@ -1,4 +1,6 @@
-namespace Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared;
+
+namespace Pet4U.Domain.Shared.ValueObjects;
 
 public record Description
 {

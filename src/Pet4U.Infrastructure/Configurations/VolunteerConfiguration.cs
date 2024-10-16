@@ -2,13 +2,13 @@ using System.Data;
 using System.Reflection.Metadata;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Pet4U.Domain;
-using Pet4U.Domain.Modules;
+using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
 
 namespace Pet4U.Infrastructure 
 {
-    public class VolunteerConfiguration : IEntityTypeConfiguration<Pet4U.Domain.Modules.Volunteer>
+    public class VolunteerConfiguration : IEntityTypeConfiguration<Volunteer>
     {
         public void Configure(EntityTypeBuilder<Volunteer> builder)
         {
@@ -58,14 +58,21 @@ namespace Pet4U.Infrastructure
 
             builder.OwnsOne(v => v.SocialNetworks, d => 
             {
-              d.ToJson();
-              d.OwnsMany(d => d.Data);
+              d.ToJson("social_networks");
+              d.OwnsMany(d => d.Data, db => {
+                db.Property(d => d.Title);
+                db.Property(d => d.Link);
+              });
             });
 
             builder.OwnsOne(v => v.PaymentInfos, d => 
             {
-              d.ToJson();
-              d.OwnsMany(d => d.Data);
+              d.ToJson("payment_infos");
+              d.OwnsMany(d => d.Data, db =>
+              {
+                db.Property(d => d.Title);
+                db.Property(d => d.Description);
+              });
             });
         }
     }

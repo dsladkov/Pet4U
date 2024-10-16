@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.Modules;
+namespace Pet4U.Domain.Shared.Ids;
 
 public record PetId
 {

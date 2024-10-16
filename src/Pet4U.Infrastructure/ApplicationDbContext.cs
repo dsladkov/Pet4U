@@ -2,7 +2,8 @@ using System.Dynamic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
-using Pet4U.Domain.Modules;
+using Pet4U.Domain.PetManagement.AgregateRoot;
+using Pet4U.Domain.SpeciesManagement.AgregateRoot;
 
 namespace Pet4U.Infrastructure;
 

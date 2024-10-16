@@ -1,8 +1,8 @@
-namespace Pet4U.Domain;
+namespace Pet4U.Domain.Volunteers;
 
 public record PaymentInfoList
 {
-  public IReadOnlyCollection<PaymentInfo> Data;
+  public IReadOnlyCollection<PaymentInfo> Data = [];
 
   public PaymentInfoList(IReadOnlyCollection<PaymentInfo> paymentInfos) : base() => Data = paymentInfos;
 

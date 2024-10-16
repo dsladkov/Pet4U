@@ -1,9 +1,13 @@
-using System.ComponentModel.DataAnnotations.Schema;
-using Pet4U.Domain.Shared;
 
-namespace Pet4U.Domain.Modules
+using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.Shared.ValueObjects;
+using Pet4U.Domain.ValueObjects;
+using Pet4U.Domain.Volunteers;
+
+namespace Pet4U.Domain.PetManagement.AgregateRoot
 {
-  public class Volunteer : Entity<VolunteerId>
+  public sealed class Volunteer : Entity<VolunteerId>
   {
     private List<Pet> _pets = [];
     private Volunteer(VolunteerId id) : base(id){}

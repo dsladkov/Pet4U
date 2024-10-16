@@ -1,6 +1,7 @@
-using Pet4U.Domain.Modules;
-using Pet4U.Domain;
+using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
+using Pet4U.Domain.Shared.ValueObjects;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 
@@ -26,18 +27,18 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
       command.MiddleName
     );
 
-    if (fullName.IsFailure)
-      return fullName.Error;
+    // if (fullName.IsFailure)
+    //   return fullName.Error;
 
     var description = Description.Create(command.Description);
 
-    if (description.IsFailure)
-      return description.Error!;
+    // if (description.IsFailure)
+    //   return description.Error!;
 
     var phoneResult = Phone.Create(command.Phone);
-    
-    if (phoneResult.IsFailure)
-      return phoneResult.Error!;
+
+    // if (phoneResult.IsFailure)
+    //   return phoneResult.Error!;
 
     var volunteer = Volunteer.Create
     (

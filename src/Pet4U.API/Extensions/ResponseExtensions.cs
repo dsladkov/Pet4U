@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.Domain.Shared;
 using Pet4U.Response;
@@ -7,6 +8,35 @@ namespace Pet4U.API.Extensions;
 
 public static class ResponseExtensions
 {
+
+  public static ActionResult ToValidationErrorResponse(this FluentValidation.Results.ValidationResult validationResult)
+  {
+    if(validationResult.IsValid)
+      throw new InvalidOperationException("Result cannot be succeed");
+
+    
+      // var validationErrors = validationResult.Errors;
+      // List<ResponseError> errors = [];
+
+      // foreach(var validationError in validationErrors)
+      // {
+      //   var error = Error.Validation(validationError.ErrorCode, validationError.ErrorMessage);
+      //   errors.Add(new(error.Code, error.Message, validationError.PropertyName));
+      // }
+
+      var errors = from validationError in validationResult.Errors
+
+        let error  = Error.Deserialize(validationError.ErrorMessage) //Error.Validation(validationError.ErrorCode, validationError.ErrorMessage)
+        select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+        //select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+      var envelope = Envelope.Error(errors);
+      return new ObjectResult(envelope)
+      {
+        StatusCode = StatusCodes.Status400BadRequest
+      };
+
+  }
   public static ActionResult ToResponse(this Error error)
   {
     //ProblemDetails
@@ -20,8 +50,14 @@ public static class ResponseExtensions
       _ => StatusCodes.Status500InternalServerError,
       //ErrorType.None => StatusCodes.Status200OK,
     };
+    var responseError = new ResponseError(error.Code, error.Message, null);
 
-    var envelope = Envelope.Error(error);
+    // var listResponseError =  new List<ResponseError>();
+    // listResponseError.Add(responseError);
+
+    var envelope = Envelope.Error([responseError]);
+
+
     return new ObjectResult(envelope)
     {
       StatusCode = statusCode
@@ -44,7 +80,14 @@ public static class ResponseExtensions
       //ErrorType.None => StatusCodes.Status200OK,
     };
 
-    var envelope = Envelope.Error(result.Error); 
+    var responseError = new ResponseError(result.Error.Code, result.Error.Message, null);
+
+    // var listResponseError =  new List<ResponseError>();
+    // listResponseError.Add(responseError);
+
+    var envelope = Envelope.Error([responseError]);
+
+    //var envelope = Envelope.Error(result.Error);
     return new ObjectResult(envelope) //result.Error
     {
       StatusCode = statusCode

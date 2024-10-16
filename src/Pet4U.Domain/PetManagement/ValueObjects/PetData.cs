@@ -1,4 +1,7 @@
-namespace Pet4U.Domain.Modules;
+
+using Pet4U.Domain.Shared.Ids;
+
+namespace Pet4U.Domain.Volunteers;
 
 public record PetData
 {

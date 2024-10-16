@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Pet4U.Domain.Modules;
+using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
 
 namespace Pet4U.Infrastructure 
 {
-    public class PetConfiguration : IEntityTypeConfiguration<Pet4U.Domain.Modules.Pet>
+    public class PetConfiguration : IEntityTypeConfiguration<Pet>
     {
         public void Configure(EntityTypeBuilder<Pet> builder)
         {
