@@ -22,9 +22,9 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
   {
     var fullName = FullName.Create
     (
-      command.FirstName,
-      command.LastName,
-      command.MiddleName
+      command.FullNameDto.FirstName,
+      command.FullNameDto.LastName,
+      command.FullNameDto.MiddleName
     );
 
     // if (fullName.IsFailure)

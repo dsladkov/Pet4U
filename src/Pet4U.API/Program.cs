@@ -7,22 +7,23 @@ using SharpGrip.FluentValidation.AutoValidation.Mvc.Results;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Pet4U.API.Validation;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddControllers();
+
 builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddSwaggerGen();
 
 
 builder.Services.AddInfraStructure();
+
 builder.Services.AddApplication();
+
 builder.Services.AddValidation();
-
-
-
 
 var app = builder.Build();
 
@@ -30,7 +31,10 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+
     app.UseSwaggerUI();
+
+    await app.ApplyMigrations();
 }
 
 app.UseAuthorization();
@@ -38,5 +42,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-
