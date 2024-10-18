@@ -27,7 +27,7 @@ public class VolunteerController : ApplicationController //ControllerBase
   [FromBody] CreateVolunteerRequest volunteer, 
   CancellationToken cancellationToken = default)
   {
-
+    // throw new ApplicationException("Volunteers cannot be creted");
     // var validationResult = await requestValidator.ValidateAsync(volunteer, cancellationToken);
     // if(!validationResult.IsValid)
     // {
