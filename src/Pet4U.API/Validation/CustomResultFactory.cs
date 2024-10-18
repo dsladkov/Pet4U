@@ -23,7 +23,7 @@ public class CustomResultFactory : IFluentValidationAutoValidationResultFactory
             select new ResponseError(error.Code, error.Message, invalidField);
             errorsList.AddRange(errors);
         }
-        
+
         var envelope = Envelope.Error(errorsList);
 
         return new ObjectResult(envelope)
