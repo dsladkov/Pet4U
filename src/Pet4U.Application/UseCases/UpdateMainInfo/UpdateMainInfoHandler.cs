@@ -28,6 +28,13 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
     if(volunteerResult.IsFailure)
       return volunteerResult.Error;
 
+     var fullName = FullName.Create
+    (
+      command.FullNameDto.FirstName,
+      command.FullNameDto.LastName,
+      command.FullNameDto.MiddleName
+    ).Value;
+
     var descriptionResult = Description.Create(command.Description).Value;
     // if(descriptionResult.IsFailure)
     //   return descriptionResult.Error;
@@ -36,7 +43,7 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
     // if(phoneResult.IsFailure)
     //   return phoneResult.Error;
 
-    volunteerResult?.Value?.UpdateMainInfo(descriptionResult, phoneResult);
+    volunteerResult?.Value?.UpdateMainInfo(fullName, command.Email, command.Experience, descriptionResult, phoneResult);
 
     var volunteerUpdated = await _volunteerRepository.Save(volunteerResult.Value,cancellationToken);
     // var fullName = FullName.Create

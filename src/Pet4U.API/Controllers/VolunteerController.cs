@@ -93,6 +93,33 @@ public class VolunteerController : ApplicationController //ControllerBase
     return result.ToResponse();
   }
 
+  [HttpPut("{id:guid}/social-networks")]
+  public async Task<IActionResult> UpdateSocialNetworkList(
+    [FromRoute] Guid id, 
+    [FromBody] UpdateSocialNetworkListDto dto,
+    [FromServices] IUpdateSocialNetworks _updateSocialNetworksHandler,
+    [FromServices] IValidator<UpdateSocialNetworkListRequest> requestValidator,
+    CancellationToken cancellationToken =default)
+  {
+    UpdateSocialNetworkListRequest updateSocialNetworkListVolunteerRequest = new UpdateSocialNetworkListRequest(id, dto);
+     var validationResult = await requestValidator.ValidateAsync(updateSocialNetworkListVolunteerRequest, cancellationToken);
+     if(validationResult.IsValid == false)
+     {
+      // var errors = from validationError in validationResult.Errors
+ 
+      //             let error  = Error.Deserialize(validationError.ErrorMessage)
+
+      //             select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+      //   var envelope = Envelope.Error(errors);
+      //   return BadRequest(envelope);
+
+      return validationResult.ToValidationErrorResponse();
+     }
+    var result = await _updateSocialNetworksHandler.HandleAsync(updateSocialNetworkListVolunteerRequest.ToCommand(), cancellationToken);
+    return result.ToResponse();
+  }
+
   [HttpDelete("{id:guid}")]
   public async Task<IActionResult> Delete(
     [FromRoute] Guid id,

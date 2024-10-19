@@ -39,19 +39,25 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public int? Experience { get; private set; }
     public Phone Phone { get; private set; } = null!;
 
-    public SocialNetworksList? SocialNetworks { get; private set; }
-    public PaymentInfoList? PaymentInfos { get; private set; }
+    public SocialNetworks SocialNetworks { get; private set; }
+    public PaymentInfoList PaymentInfos { get; private set; }
   
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);
+
+    // public void UpdateSocialNetworks(IReadOnlyCollection<SocialNetwork> socialNetworks) => SocialNetworks = new(socialNetworks);
+    public void UpdateSocialNetworks(SocialNetworks socialNetworks) => SocialNetworks = socialNetworks;
     private int Counter(Status status) => _pets.Where(p => p.Status == status).Count();
 
     public int HomeFoundedPetsCounter() =>  Counter(Status.FoundHome);
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
 
-    public void UpdateMainInfo(Description description, Phone phone)
+    public void UpdateMainInfo(FullName fullname, string email, int experience, Description description, Phone phone)
     {
+      FullName = fullname;
+      Email = email;
+      Experience = experience;
       Description = description;
       Phone = phone;
     }

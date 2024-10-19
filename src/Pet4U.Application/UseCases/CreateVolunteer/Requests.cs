@@ -1,4 +1,5 @@
 
+using System.Data;
 using FluentValidation;
 using Pet4U.Application.Validation;
 using Pet4U.Domain.Shared;
@@ -9,6 +10,17 @@ using Pet4U.Domain.Volunteers;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 
+  public record SocialNetworkDto
+  {
+    public string Title { get; init;} = null!;
+    public string Link { get; init; } = null!;
+  }
+  public record UpdateSocialNetworkListDto(IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos);
+  public record UpdateSocialNetworkListRequest(Guid Id, UpdateSocialNetworkListDto Dto)
+  {
+    public UpdateSocialNetworkListCommand ToCommand() => new(Id, Dto.SocialNetworkDtos );
+  }
+
 public record DeleteVolunteerCommand (Guid Id);
 public record DeleteVolunteerRequest
 (
@@ -18,7 +30,7 @@ public record DeleteVolunteerRequest
   public DeleteVolunteerCommand ToCommand() => new (Id);
 }
 
-public record UpdateMainInfoDto(string Description, string Phone);
+public record UpdateMainInfoDto(FullNameDto FullNameDto, string Email,string Description, int Experience ,string Phone);
 public record UpdateMainInfoVolunteerRequest
 (
   Guid VolunteerId,
@@ -28,10 +40,10 @@ public record UpdateMainInfoVolunteerRequest
   public UpdateMainInfoVolunteerCommand ToCommand() => 
   new( 
     VolunteerId, 
-    //FullNameDto, 
-    //Email, 
+    Dto.FullNameDto, 
+    Dto.Email, 
     Dto.Description, 
-    //Experience, 
+    Dto.Experience, 
     Dto.Phone
     );
 }
@@ -77,9 +89,20 @@ public class UpdateMainInfoVolunteerRequestValidator : AbstractValidator<UpdateM
   public UpdateMainInfoVolunteerRequestValidator()
   {
     RuleFor(r => r.VolunteerId).NotEmpty().WithError(Errors.General.ValueIsRequired("VolunteerId"));
-    RuleFor(r => r.Dto.Description).NotEmpty().MustBeValueObject(Description.Create);//.When(r => !string.IsNullOrEmpty(r.Description));
-    RuleFor(r => r.Dto.Phone).NotEmpty().MustBeValueObject(Phone.Create); 
-    //RuleFor(c => c.FullNameDto).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
+    RuleFor(r => r.Dto.FullNameDto).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
+    RuleFor(r => r.Dto.Email).NotEmpty().EmailAddress();
+    RuleFor(r => r.Dto.Experience).NotEmpty().WithError(Errors.General.ValueIsRequired("Experience"));
+    RuleFor(r => r.Dto.Description).NotEmpty().MustBeValueObject(Description.Create);
+    RuleFor(r => r.Dto.Phone).NotEmpty().MustBeValueObject(Phone.Create);
+  }
+}
+
+public class UpdateSocialNetworkListVolunteerRequestValidator : AbstractValidator<UpdateSocialNetworkListRequest>
+{
+  public UpdateSocialNetworkListVolunteerRequestValidator()
+  {
+    RuleFor(r => r.Id).NotEmpty().WithError(Errors.General.ValueIsRequired("VolunteerId"));
+    RuleForEach(r => r.Dto.SocialNetworkDtos).NotNull();
   }
 }
 
@@ -106,9 +129,14 @@ public record CreateVolunteerCommand
 
 public record UpdateMainInfoVolunteerCommand
 ( Guid VolunteerId,
-  //FullNameDto FullNameDto,
-  //string Email,
+  FullNameDto FullNameDto,
+  string Email,
   string Description,
-  //int Experience,
+  int Experience,
   string Phone
+);
+
+public record UpdateSocialNetworkListCommand
+( Guid VolunteerId,
+  IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos
 );
