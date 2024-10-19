@@ -38,7 +38,7 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
 
     volunteerResult?.Value?.UpdateMainInfo(descriptionResult, phoneResult);
 
-    var volunteerUpdated = await _volunteerRepository.Update(volunteerResult.Value,cancellationToken);
+    var volunteerUpdated = await _volunteerRepository.Save(volunteerResult.Value,cancellationToken);
     // var fullName = FullName.Create
     // (
     //   command.FullNameDto.FirstName,
