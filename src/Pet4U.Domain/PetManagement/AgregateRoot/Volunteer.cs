@@ -7,8 +7,9 @@ using Pet4U.Domain.Volunteers;
 
 namespace Pet4U.Domain.PetManagement.AgregateRoot
 {
-  public sealed class Volunteer : Entity<VolunteerId>
+    public sealed class Volunteer : Entity<VolunteerId>, ISoftDeletable
   {
+    private bool _isDeleted = false;
     private List<Pet> _pets = [];
     private Volunteer(VolunteerId id) : base(id){}
 
@@ -40,6 +41,7 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
 
     public SocialNetworksList? SocialNetworks { get; private set; }
     public PaymentInfoList? PaymentInfos { get; private set; }
+  
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);
     private int Counter(Status status) => _pets.Where(p => p.Status == status).Count();
@@ -113,6 +115,18 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
         socialNetworks: socialNetworks, 
         paymentInfos: paymentInfos
       );
+    }
+
+    public void Delete()
+    {
+      if(!_isDeleted)
+        _isDeleted = true;
+    }
+
+    public void Restore()
+    {
+      if(_isDeleted)
+        _isDeleted = false;
     }
 
     public static implicit operator Result<Guid>(Volunteer volunteer) => volunteer.Id.Value;

@@ -2,11 +2,21 @@
 using FluentValidation;
 using Pet4U.Application.Validation;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
+
+public record DeleteVolunteerCommand (Guid Id);
+public record DeleteVolunteerRequest
+(
+  Guid Id
+)
+{
+  public DeleteVolunteerCommand ToCommand() => new (Id);
+}
 
 public record UpdateMainInfoDto(string Description, string Phone);
 public record UpdateMainInfoVolunteerRequest
@@ -71,6 +81,12 @@ public class UpdateMainInfoVolunteerRequestValidator : AbstractValidator<UpdateM
     RuleFor(r => r.Dto.Phone).NotEmpty().MustBeValueObject(Phone.Create); 
     //RuleFor(c => c.FullNameDto).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
   }
+}
+
+
+public class DeleteVolunteerRequestValidator : AbstractValidator<DeleteVolunteerRequest>
+{
+  public DeleteVolunteerRequestValidator() => RuleFor(r => r.Id).NotEmpty().WithError(Errors.General.ValueIsRequired("VolunteerId"));
 }
 
 

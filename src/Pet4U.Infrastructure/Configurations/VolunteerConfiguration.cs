@@ -54,7 +54,8 @@ namespace Pet4U.Infrastructure
 
             builder.HasMany(v => v.Pets)
             .WithOne()
-            .HasForeignKey("volunteer_Id");
+            .HasForeignKey("volunteer_Id")
+            .OnDelete(DeleteBehavior.Cascade);
 
             builder.OwnsOne(v => v.SocialNetworks, d => 
             {
@@ -74,6 +75,11 @@ namespace Pet4U.Infrastructure
                 db.Property(d => d.Description);
               });
             });
+
+            //!!!
+            builder.Property<bool>("_isDeleted")
+              .UsePropertyAccessMode(PropertyAccessMode.Field)
+              .HasColumnName("is_deleted");
         }
     }
 }

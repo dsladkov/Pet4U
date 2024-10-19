@@ -4,8 +4,10 @@ using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Volunteers;
 namespace Pet4U.Domain.PetManagement.AgregateRoot
 {
-  public class Pet : Entity<PetId>
+  public class Pet : Entity<PetId>, ISoftDeletable
   {
+    private bool _isDeleted = false;
+
     private List<PetPhoto> _petPhoto = [];
 
     private Pet(PetId id) : base(id){}
@@ -69,5 +71,17 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public IReadOnlyCollection<PetPhoto> PetPhotos => _petPhoto;
 
     public void AddPetPhoto(PetPhoto petPhoto) => _petPhoto.Add(petPhoto);
-  }
+
+      public void Delete()
+      {
+        if(!_isDeleted)
+          _isDeleted = true;
+      }
+
+      public void Restore()
+      {
+        if(_isDeleted)
+          _isDeleted = false;
+      }
+    }
 }

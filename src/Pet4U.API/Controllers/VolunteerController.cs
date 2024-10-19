@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.API.Extensions;
 using Pet4U.Application.UseCases.CreateVolunteer;
+using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.ValueObjects;
@@ -66,7 +67,7 @@ public class VolunteerController : ApplicationController //ControllerBase
 
   //volunteers/id/main-info
   [HttpPut("{id:guid}/main-info")]
-  public async Task<IActionResult> Update(
+  public async Task<IActionResult> UpdateMainInfo(
     [FromRoute] Guid id, 
     [FromBody] UpdateMainInfoDto dto,
     [FromServices] IUpdateMainInfoHandler _updateMainInfoHandler,
@@ -89,6 +90,24 @@ public class VolunteerController : ApplicationController //ControllerBase
       return validationResult.ToValidationErrorResponse();
      }
     var result = await _updateMainInfoHandler.HandleAsync(updateMainInfoVolunteerRequest.ToCommand(), cancellationToken);
+    return result.ToResponse();
+  }
+
+  [HttpDelete("{id:guid}")]
+  public async Task<IActionResult> Delete(
+    [FromRoute] Guid id,
+    [FromServices] IDeleteVolunteerHandler _deleteVolunteerHandler,
+    [FromServices] IValidator<DeleteVolunteerRequest> requestValidator,
+    CancellationToken cancellationToken =default)
+  {
+    DeleteVolunteerRequest deleteVolunteerRequest = new DeleteVolunteerRequest(id);
+
+    var validationResult = await requestValidator.ValidateAsync(deleteVolunteerRequest, cancellationToken);
+
+    if(validationResult.IsValid == false)
+     return validationResult.ToValidationErrorResponse();
+
+    var result = await _deleteVolunteerHandler.HandleAsync(deleteVolunteerRequest.ToCommand(), cancellationToken);
     return result.ToResponse();
   }
 }

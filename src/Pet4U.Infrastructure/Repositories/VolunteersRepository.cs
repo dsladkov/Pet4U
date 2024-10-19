@@ -60,4 +60,17 @@ public class VolunteersRepository : IVolunteersRepository
 
     return volunteer;
   }
+
+  public async Task<Result<Volunteer?>>Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
+  {
+    // var result = _dbContext.ChangeTracker.Entries<Volunteer>()
+    // .Where(v => v.State == EntityState.Detached)
+    // .FirstOrDefault()?.Entity?.Id?? Guid.Empty;
+
+    _dbContext.Volunteers.Remove(volunteer);
+
+    await _dbContext.SaveChangesAsync(cancellationToken);
+
+    return volunteer;
+  }
 }

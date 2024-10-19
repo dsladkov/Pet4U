@@ -87,6 +87,11 @@ namespace Pet4U.Infrastructure
             // });
 
             // builder.Property(p => p.BreedId);
+            
+            //!!!
+            builder.Property<bool>("_isDeleted")
+              .UsePropertyAccessMode(PropertyAccessMode.Field)
+              .HasColumnName("is_deleted");
         }
     }
 }

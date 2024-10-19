@@ -77,7 +77,7 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
     // var result = await _volunteerRepository.AddAsync(volunteer.Value, cancellationToken);
     // _logger.LogInformation("Volunteer Id: {Id} has been created", volunteer.Value.Id);
     // return result;
-    _logger.LogInformation("Volunteer with id {0} is updated", volunteerResult.Value.Id);
+    _logger.LogInformation("Volunteer with id {0} has been updated with description {1} and phone {2}", volunteerResult.Value.Id, volunteerResult.Value.Description, volunteerResult.Value.Phone);
     return volunteerUpdated;
   }
 }
