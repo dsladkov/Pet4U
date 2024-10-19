@@ -48,6 +48,12 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public int LookingForHomePetsCounter() => Counter(Status.LookingForHome);
     public int NeedHelpPetsCounter() => Counter(Status.NeedHelp);
 
+    public void UpdateMainInfo(Description description, Phone phone)
+    {
+      Description = description;
+      Phone = phone;
+    }
+
     public static Result<Volunteer> Create
     (
       VolunteerId id,
@@ -71,6 +77,31 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
       // if(phone is null)
       //   return "Invalid phone number";
 
+      return new Volunteer
+      (
+        id: id, 
+        fullName: fullName, 
+        email: email, 
+        description: description, 
+        experience: experience,
+        phone: phone,
+        socialNetworks: socialNetworks, 
+        paymentInfos: paymentInfos
+      );
+    }
+
+    public static Result<Volunteer> Update
+    (
+      VolunteerId id,
+      FullName fullName,
+      string email,
+      Description description,
+      int experience,
+      Phone phone,
+      IReadOnlyCollection<SocialNetwork>? socialNetworks,
+      IReadOnlyCollection<PaymentInfo>? paymentInfos
+      )
+    {
       return new Volunteer
       (
         id: id, 

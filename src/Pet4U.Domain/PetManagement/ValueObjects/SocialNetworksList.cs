@@ -4,7 +4,7 @@ namespace Pet4U.Domain.ValueObjects;
 
 public record SocialNetworksList 
 {
-  public IReadOnlyCollection<SocialNetwork> Data = [];
+  public IReadOnlyCollection<SocialNetwork> Data {get;}
 
   public SocialNetworksList(IReadOnlyCollection<SocialNetwork> socialNetworks) => Data = socialNetworks;
 

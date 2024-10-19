@@ -20,5 +20,9 @@ public static class Errors
       var label = name + " " ?? "";
       return Error.Validation("length.is.invalid", $"invalid {label}length ");
     }
+    public static Error ValueIsRequired(string? name = null)
+    {
+      return Error.Validation("value.is.required",  $"{name ?? "value"} is required");
+    }
   }
 }

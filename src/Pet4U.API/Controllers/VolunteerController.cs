@@ -2,6 +2,7 @@ using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.API.Extensions;
 using Pet4U.Application.UseCases.CreateVolunteer;
+using Pet4U.Application.UseCases.UpdateMainInfo;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Response;
@@ -61,5 +62,33 @@ public class VolunteerController : ApplicationController //ControllerBase
     //   return result.Error.ToResponse(); //result.Error.ToResponse();
     
     // return Ok(result.Value); //Ok(Envelope.Ok(result ));
+  }
+
+  //volunteers/id/main-info
+  [HttpPut("{id:guid}/main-info")]
+  public async Task<IActionResult> Update(
+    [FromRoute] Guid id, 
+    [FromBody] UpdateMainInfoDto dto,
+    [FromServices] IUpdateMainInfoHandler _updateMainInfoHandler,
+    [FromServices] IValidator<UpdateMainInfoVolunteerRequest> requestValidator,
+    CancellationToken cancellationToken =default)
+  {
+    UpdateMainInfoVolunteerRequest updateMainInfoVolunteerRequest = new UpdateMainInfoVolunteerRequest(id, dto);
+     var validationResult = await requestValidator.ValidateAsync(updateMainInfoVolunteerRequest, cancellationToken);
+     if(validationResult.IsValid == false)
+     {
+      // var errors = from validationError in validationResult.Errors
+ 
+      //             let error  = Error.Deserialize(validationError.ErrorMessage)
+
+      //             select new ResponseError(error.Code, error.Message, validationError.PropertyName);
+
+      //   var envelope = Envelope.Error(errors);
+      //   return BadRequest(envelope);
+
+      return validationResult.ToValidationErrorResponse();
+     }
+    var result = await _updateMainInfoHandler.HandleAsync(updateMainInfoVolunteerRequest.ToCommand(), cancellationToken);
+    return result.ToResponse();
   }
 }

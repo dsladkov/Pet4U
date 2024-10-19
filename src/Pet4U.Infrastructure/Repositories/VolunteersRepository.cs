@@ -16,7 +16,9 @@ public class VolunteersRepository : IVolunteersRepository
   }
 
 
-  public async Task<Result<Guid>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+  public async Task<Result<Guid>> AddAsync(
+    Volunteer volunteer, 
+    CancellationToken cancellationToken = default)
   {
     await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
@@ -25,7 +27,9 @@ public class VolunteersRepository : IVolunteersRepository
     return volunteer;
   }
 
-  public async Task<Result<Volunteer?>>GetByIdAsync(VolunteerId volunteerId, CancellationToken cancellationToken = default)
+  public async Task<Result<Volunteer?>>GetByIdAsync(
+    VolunteerId volunteerId, 
+    CancellationToken cancellationToken = default)
   {
     var volunteer = await _dbContext.Volunteers
               .Include(v => v.Pets)
@@ -33,6 +37,23 @@ public class VolunteersRepository : IVolunteersRepository
 
     if(volunteerId is null)
       return Errors.General.NotFound(volunteerId!);
+
+    return volunteer;
+  }
+
+  public async Task<Result<Guid>> Update(
+    Volunteer volunteer, 
+    CancellationToken cancellationToken = default)
+  {
+    var entries1 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    _dbContext.Update(volunteer);
+
+    var entries2 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    await _dbContext.SaveChangesAsync(cancellationToken);
+
+    var entries3 = _dbContext.ChangeTracker.Entries<Volunteer>();
 
     return volunteer;
   }
