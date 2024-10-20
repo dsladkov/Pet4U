@@ -1,11 +1,11 @@
 namespace Pet4U.Domain.Volunteers;
 
-public record PaymentInfoList
+public record PaymentInfos
 {
   public IReadOnlyCollection<PaymentInfo> Data {get;}
 
-  public PaymentInfoList(IReadOnlyCollection<PaymentInfo> paymentInfos) : base() => Data = paymentInfos;
+  public PaymentInfos(IEnumerable<PaymentInfo> paymentInfos) : base() => Data = paymentInfos.ToList();
 
   // ef core
-  public PaymentInfoList() {}
+  public PaymentInfos() {}
 }

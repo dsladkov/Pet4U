@@ -40,7 +40,7 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public Phone Phone { get; private set; } = null!;
 
     public SocialNetworks SocialNetworks { get; private set; }
-    public PaymentInfoList PaymentInfos { get; private set; }
+    public PaymentInfos PaymentInfos { get; private set; }
   
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);
@@ -48,8 +48,11 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     // public void UpdateSocialNetworks(IReadOnlyCollection<SocialNetwork> socialNetworks) => SocialNetworks = new(socialNetworks);
     public void UpdateSocialNetworks(SocialNetworks socialNetworks)
     {
-      this.SocialNetworks = socialNetworks;
+      SocialNetworks = socialNetworks;
     } //=> SocialNetworks = socialNetworks;
+
+    public void UpdatePaymentInfos(PaymentInfos paymentInfos)=> PaymentInfos = paymentInfos;
+    
     private int Counter(Status status) => _pets.Where(p => p.Status == status).Count();
 
     public int HomeFoundedPetsCounter() =>  Counter(Status.FoundHome);

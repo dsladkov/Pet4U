@@ -4,6 +4,7 @@ using Pet4U.API.Extensions;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
+using Pet4U.Application.UseCases.UpdatePaymentInfos;
 using Pet4U.Application.UseCases.UpdateSocialNetworks;
 
 namespace Pet4U.API;
@@ -115,6 +116,25 @@ public class VolunteerController : ApplicationController //ControllerBase
       return validationResult.ToValidationErrorResponse();
      }
     var result = await _updateSocialNetworksHandler.HandleAsync(updateSocialNetworkListVolunteerRequest.ToCommand(), cancellationToken);
+    return result.ToResponse();
+  }
+
+  [HttpPut("{id:guid}/payment-infos")]
+  public async Task<IActionResult> UpdatePaymentInfos(
+    [FromRoute] Guid id, 
+    [FromBody] UpdatePaymentInfoDto dto,
+    [FromServices] IUpdatePaymentInfosHandler _updatePaymentInfosHandler,
+    [FromServices] IValidator<UpdatePaymentInfosRequest> requestValidator,
+    CancellationToken cancellationToken =default)
+  {
+    UpdatePaymentInfosRequest updatePaymentInfosVolunteerRequest = new UpdatePaymentInfosRequest(id, dto);
+     var validationResult = await requestValidator.ValidateAsync(updatePaymentInfosVolunteerRequest, cancellationToken);
+
+     if(validationResult.IsValid == false)
+      return validationResult.ToValidationErrorResponse();
+
+    var result = await _updatePaymentInfosHandler.HandleAsync(updatePaymentInfosVolunteerRequest.ToCommand(), cancellationToken);
+    
     return result.ToResponse();
   }
 
