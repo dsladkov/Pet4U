@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
+using Pet4U.Application.UseCases.UpdateSocialNetworks;
 
 namespace Pet4U.Application;
 

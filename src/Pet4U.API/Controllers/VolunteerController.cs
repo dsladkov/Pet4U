@@ -4,9 +4,7 @@ using Pet4U.API.Extensions;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
-using Pet4U.Domain.Shared;
-using Pet4U.Domain.ValueObjects;
-using Pet4U.Response;
+using Pet4U.Application.UseCases.UpdateSocialNetworks;
 
 namespace Pet4U.API;
 

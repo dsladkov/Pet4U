@@ -8,7 +8,7 @@ using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
 
-namespace Pet4U.Application.UseCases.UpdateMainInfo;
+namespace Pet4U.Application.UseCases.UpdateSocialNetworks;
 
 
 public class UpdateSocialNetworksHandler : IUpdateSocialNetworks
@@ -31,9 +31,11 @@ public class UpdateSocialNetworksHandler : IUpdateSocialNetworks
     if(volunteerResult.IsFailure)
       return volunteerResult.Error;
 
-  //  var socialNetworks =  (from item in command.SocialNetworkDtos select new SocialNetwork{ Title = item.Title, Link = item.Link }).ToImmutableArray();
+   var socialNetworks =  from item in command.SocialNetworkDtos
+                         let sn = SocialNetwork.Create(item.Title, item.Link )
+                         select sn.Value;
 
-  var socialNetworks = command.SocialNetworkDtos.Select(s => SocialNetwork.Create(s.Title, s.Link).Value);
+  //var socialNetworks = command.SocialNetworkDtos.Select(s => SocialNetwork.Create(s.Title, s.Link).Value);
      
    volunteerResult?.Value?.UpdateSocialNetworks(new SocialNetworks(socialNetworks));
 
