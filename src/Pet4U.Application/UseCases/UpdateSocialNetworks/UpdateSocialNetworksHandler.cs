@@ -33,9 +33,9 @@ public class UpdateSocialNetworksHandler : IUpdateSocialNetworks
 
   //  var socialNetworks =  (from item in command.SocialNetworkDtos select new SocialNetwork{ Title = item.Title, Link = item.Link }).ToImmutableArray();
 
-  var socialNetworks = command.SocialNetworkDtos.Select(s => SocialNetwork.Create(s.Title, s.Link));
-   
-   volunteerResult.Value.UpdateSocialNetworks(new SocialNetworks(socialNetworks));
+  var socialNetworks = command.SocialNetworkDtos.Select(s => SocialNetwork.Create(s.Title, s.Link).Value);
+     
+   volunteerResult?.Value?.UpdateSocialNetworks(new SocialNetworks(socialNetworks));
 
     //volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 

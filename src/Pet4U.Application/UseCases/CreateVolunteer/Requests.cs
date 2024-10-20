@@ -12,11 +12,11 @@ namespace Pet4U.Application.UseCases.CreateVolunteer;
 
   public record SocialNetworkDto
   {
-    public string Title { get; init;} = null!;
-    public string Link { get; init; } = null!;
+    public string Title { get; set;}
+    public string Link { get; set; }
   }
   public record UpdateSocialNetworkListDto(IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos);
-  public record UpdateSocialNetworkListRequest(Guid Id, UpdateSocialNetworkListDto Dto)
+  public record UpdateSocialNetworkListRequest(Guid Id,UpdateSocialNetworkListDto Dto)
   {
     public UpdateSocialNetworkListCommand ToCommand() => new(Id, Dto.SocialNetworkDtos );
   }

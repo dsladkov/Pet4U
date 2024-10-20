@@ -46,7 +46,10 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public void AddPet(Pet pet) => _pets.Add(pet);
 
     // public void UpdateSocialNetworks(IReadOnlyCollection<SocialNetwork> socialNetworks) => SocialNetworks = new(socialNetworks);
-    public void UpdateSocialNetworks(SocialNetworks socialNetworks) => SocialNetworks = socialNetworks;
+    public void UpdateSocialNetworks(SocialNetworks socialNetworks)
+    {
+      this.SocialNetworks = socialNetworks;
+    } //=> SocialNetworks = socialNetworks;
     private int Counter(Status status) => _pets.Where(p => p.Status == status).Count();
 
     public int HomeFoundedPetsCounter() =>  Counter(Status.FoundHome);
