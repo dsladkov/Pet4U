@@ -17,9 +17,11 @@ public class SoftDeleteInterceptor : SaveChangesInterceptor
 
           foreach(var entry in entries)
           {
-            entry.State = EntityState.Modified;
             if(entry.Entity is ISoftDeletable item)
-               item.Delete();
+            {
+              entry.State = EntityState.Modified;
+              item.Delete();
+            }
           }
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }

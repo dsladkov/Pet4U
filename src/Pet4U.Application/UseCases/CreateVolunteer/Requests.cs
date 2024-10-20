@@ -7,10 +7,10 @@ using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
+using Pet4U.Application.UseCases.Shared;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 
-public record FullNameDto(string FirstName, string LastName, string MiddleName);
 public record CreateVolunteerCommand
 (
   FullNameDto FullNameDto,

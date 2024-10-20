@@ -7,11 +7,11 @@ using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
+using Pet4U.Application.UseCases.Shared;
 
 namespace Pet4U.Application.UseCases.UpdateMainInfo;
 
 
-public record FullNameDto(string FirstName, string LastName, string MiddleName);
 public record UpdateMainInfoDto(FullNameDto FullNameDto, string Email,string Description, int Experience ,string Phone);
 public record UpdateMainInfoVolunteerRequest
 (
