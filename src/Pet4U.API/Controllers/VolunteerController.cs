@@ -94,12 +94,12 @@ public class VolunteerController : ApplicationController //ControllerBase
   [HttpPut("{id:guid}/social-networks")]
   public async Task<IActionResult> UpdateSocialNetworkList(
     [FromRoute] Guid id, 
-    [FromBody] UpdateSocialNetworkListDto dto,
+    [FromBody] UpdateSocialNetworksDto dto,
     [FromServices] IUpdateSocialNetworks _updateSocialNetworksHandler,
-    [FromServices] IValidator<UpdateSocialNetworkListRequest> requestValidator,
+    [FromServices] IValidator<UpdateSocialNetworksRequest> requestValidator,
     CancellationToken cancellationToken =default)
   {
-    UpdateSocialNetworkListRequest updateSocialNetworkListVolunteerRequest = new UpdateSocialNetworkListRequest(id, dto);
+    UpdateSocialNetworksRequest updateSocialNetworkListVolunteerRequest = new UpdateSocialNetworksRequest(id, dto);
      var validationResult = await requestValidator.ValidateAsync(updateSocialNetworkListVolunteerRequest, cancellationToken);
      if(validationResult.IsValid == false)
      {

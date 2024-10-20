@@ -21,13 +21,13 @@ public record UpdateSocialNetworkListCommand
   IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos
 );
 
-public record UpdateSocialNetworkListDto(IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos);
-public record UpdateSocialNetworkListRequest(Guid Id,UpdateSocialNetworkListDto Dto)
+public record UpdateSocialNetworksDto(IReadOnlyCollection<SocialNetworkDto> SocialNetworkDtos);
+public record UpdateSocialNetworksRequest(Guid Id,UpdateSocialNetworksDto Dto)
 {
   public UpdateSocialNetworkListCommand ToCommand() => new(Id, Dto.SocialNetworkDtos );
 }
 
-public class UpdateSocialNetworkListVolunteerRequestValidator : AbstractValidator<UpdateSocialNetworkListRequest>
+public class UpdateSocialNetworkListVolunteerRequestValidator : AbstractValidator<UpdateSocialNetworksRequest>
 {
   public UpdateSocialNetworkListVolunteerRequestValidator()
   {
