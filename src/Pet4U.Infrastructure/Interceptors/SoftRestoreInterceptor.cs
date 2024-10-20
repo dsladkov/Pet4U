@@ -18,9 +18,11 @@ public class SoftRestoreInterceptor : SaveChangesInterceptor
 
           foreach(var entry in entries)
           {
-            entry.State = EntityState.Modified;
             if(entry.Entity is ISoftDeletable item)
-               item.Restore();
+            {
+              entry.State = EntityState.Modified;
+              item.Restore();
+            }
           }
         return await base.SavingChangesAsync(eventData, result, cancellationToken);
     }
