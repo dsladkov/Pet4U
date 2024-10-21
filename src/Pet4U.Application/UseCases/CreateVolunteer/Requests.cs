@@ -1,13 +1,26 @@
 
+using System.Data;
 using FluentValidation;
 using Pet4U.Application.Validation;
 using Pet4U.Domain.Shared;
+using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Shared.ValueObjects;
 using Pet4U.Domain.ValueObjects;
 using Pet4U.Domain.Volunteers;
+using Pet4U.Application.UseCases.Shared;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 
+public record CreateVolunteerCommand
+(
+  FullNameDto FullNameDto,
+  string Email,
+  string Description,
+  int Experience,
+  string Phone,
+  IReadOnlyCollection<PaymentInfo>? PaymentInfos,
+  IReadOnlyCollection<SocialNetwork>? SocialNetworks
+);
 public record CreateVolunteerRequest
 (
   //string FirstName,
@@ -22,12 +35,8 @@ public record CreateVolunteerRequest
   IReadOnlyCollection<SocialNetwork>? SocialNetworks
 )
 {
-  public CreateVolunteerCommand ToCommand() => new(FullNameDto, Email, Description, Experience, Phone, PaymentInfos, SocialNetworks); 
-  //FirstName, LastName, MiddleName, 
+  public CreateVolunteerCommand ToCommand() => new(FullNameDto, Email, Description, Experience, Phone, PaymentInfos, SocialNetworks);
 }
-
-
-public record FullNameDto(string FirstName, string LastName, string MiddleName);
 
 public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteerRequest>
 {
@@ -42,16 +51,3 @@ public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteer
 }
 
 
-public record CreateVolunteerCommand
-(
-  //string FirstName,
-  //string LastName,
-  //string MiddleName,
-  FullNameDto FullNameDto,
-  string Email,
-  string Description,
-  int Experience,
-  string Phone,
-  IReadOnlyCollection<PaymentInfo>? PaymentInfos,
-  IReadOnlyCollection<SocialNetwork>? SocialNetworks
-);

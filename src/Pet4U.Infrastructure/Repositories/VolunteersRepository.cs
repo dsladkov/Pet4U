@@ -16,7 +16,9 @@ public class VolunteersRepository : IVolunteersRepository
   }
 
 
-  public async Task<Result<Guid>> AddAsync(Volunteer volunteer, CancellationToken cancellationToken = default)
+  public async Task<Result<Guid>> AddAsync(
+    Volunteer volunteer, 
+    CancellationToken cancellationToken = default)
   {
     await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
@@ -25,7 +27,9 @@ public class VolunteersRepository : IVolunteersRepository
     return volunteer;
   }
 
-  public async Task<Result<Volunteer?>>GetByIdAsync(VolunteerId volunteerId, CancellationToken cancellationToken = default)
+  public async Task<Result<Volunteer?>>GetByIdAsync(
+    VolunteerId volunteerId, 
+    CancellationToken cancellationToken = default)
   {
     var volunteer = await _dbContext.Volunteers
               .Include(v => v.Pets)
@@ -33,6 +37,39 @@ public class VolunteersRepository : IVolunteersRepository
 
     if(volunteerId is null)
       return Errors.General.NotFound(volunteerId!);
+
+    return volunteer;
+  }
+
+  public async Task<Result<Guid>> Save(
+    Volunteer volunteer, 
+    CancellationToken cancellationToken = default)
+  {
+    //entries for checking the state of Volunteer entity (Changed)
+    //var entries1 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    //_dbContext.Update(volunteer);
+
+    //var entries2 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    _dbContext.Volunteers.Attach(volunteer); //This line of code for track entity. Ef core should do it by yourself. 
+
+    await _dbContext.SaveChangesAsync(cancellationToken);
+
+    //var entries3 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    return volunteer;
+  }
+
+  public async Task<Result<Volunteer?>>Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
+  {
+    // var result = _dbContext.ChangeTracker.Entries<Volunteer>()
+    // .Where(v => v.State == EntityState.Detached)
+    // .FirstOrDefault()?.Entity?.Id?? Guid.Empty;
+
+    _dbContext.Volunteers.Remove(volunteer);
+
+    await _dbContext.SaveChangesAsync(cancellationToken);
 
     return volunteer;
   }

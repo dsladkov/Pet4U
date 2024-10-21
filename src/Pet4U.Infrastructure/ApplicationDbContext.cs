@@ -4,10 +4,15 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.SpeciesManagement.AgregateRoot;
+using Pet4U.Infrastructure.Interceptors;
 
 namespace Pet4U.Infrastructure;
 
-public class ApplicationDbContext(IConfiguration configuration) : DbContext
+public class ApplicationDbContext
+(
+  IConfiguration configuration//, 
+  //SoftDeleteInterceptor softDeleteInterceptor
+  ) : DbContext
 {
   private const string DATABASE = "Database";
 
@@ -28,6 +33,8 @@ public class ApplicationDbContext(IConfiguration configuration) : DbContext
         .UseLoggerFactory( CreatedLoggerFactory() )
         .EnableSensitiveDataLogging();
         base.OnConfiguring(optionsBuilder);
+
+      optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
 
     private ILoggerFactory? CreatedLoggerFactory() =>
