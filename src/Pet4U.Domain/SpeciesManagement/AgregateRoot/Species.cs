@@ -49,6 +49,6 @@ public class Species : Entity<SpeciesId>
       return Errors.General.LengthIsInvalid("description");
     
     return new Species(id, title, description, breeds);
-  }
+  } 
 
 }

@@ -31,7 +31,7 @@ public class DeleteVolunteerHandler : IDeleteVolunteerHandler
     if(volunteerResult.IsFailure)
       return volunteerResult.Error;
 
-
+    volunteerResult.Value.Delete(); //If delete interceptor is disabled
 //  volunteerResult.Value.SetInactive();
     var volunteerDeleted = await _volunteerRepository.Delete(volunteerResult.Value,cancellationToken); //Instead of Delete it will be marked as deleted at entity bool prop
     

@@ -132,13 +132,25 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public void Delete()
     {
       if(!_isDeleted)
+      {
         _isDeleted = true;
+        foreach(var pet in _pets)
+        {
+          pet.Delete();
+        }
+      }
     }
 
     public void Restore()
     {
       if(_isDeleted)
+      {
         _isDeleted = false;
+        foreach(var pet in _pets)
+        {
+          pet.Restore();
+        }
+      }
     }
 
     public static implicit operator Result<Guid>(Volunteer volunteer) => volunteer.Id.Value;
