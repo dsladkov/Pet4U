@@ -8,7 +8,7 @@ using Pet4U.Infrastructure.Interceptors;
 
 namespace Pet4U.Infrastructure;
 
-public class ApplicationDbContext
+public sealed class ApplicationDbContext
 (
   IConfiguration configuration//, 
   //SoftDeleteInterceptor softDeleteInterceptor
@@ -34,7 +34,7 @@ public class ApplicationDbContext
         .EnableSensitiveDataLogging();
         base.OnConfiguring(optionsBuilder);
 
-      optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
+      //optionsBuilder.AddInterceptors(new SoftDeleteInterceptor());
     }
 
     private ILoggerFactory? CreatedLoggerFactory() =>
