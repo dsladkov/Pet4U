@@ -37,7 +37,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-builder.Services.AddInfraStructure();
+builder.Services.AddInfraStructure(builder.Configuration);
 
 builder.Services.AddApplication();
 

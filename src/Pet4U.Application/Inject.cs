@@ -1,6 +1,7 @@
 
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Pet4U.Application.UseCases.AddPetPhoto;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
@@ -18,6 +19,7 @@ public static class Inject
     services.AddScoped<IDeleteVolunteerHandler, DeleteVolunteerHandler>();
     services.AddScoped<IUpdateSocialNetworks, UpdateSocialNetworksHandler>();
     services.AddScoped<IUpdatePaymentInfosHandler,UpdatePaymentInfosHandler>();
+    services.AddScoped<IAddPetPhotoHandler, AddPetPhotoHandler>();
     services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
      
     return services;
