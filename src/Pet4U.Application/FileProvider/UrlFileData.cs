@@ -1,8 +1,8 @@
 namespace Pet4U.Application.FileProdiver;
 
-public record FileData
+public record UrlFileData
 (
-    Stream Stream,
     string BucketName, 
-    string ObjectName
+    string ObjectName,
+    int? TimeExpire 
 );

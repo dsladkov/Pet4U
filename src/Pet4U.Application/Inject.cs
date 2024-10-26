@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Pet4U.Application.UseCases.AddPetPhoto;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
+using Pet4U.Application.UseCases.GetUrlPetPhoto;
+using Pet4U.Application.UseCases.RemovePetPhotoFile;
 using Pet4U.Application.UseCases.UpdateMainInfo;
 using Pet4U.Application.UseCases.UpdatePaymentInfos;
 using Pet4U.Application.UseCases.UpdateSocialNetworks;
@@ -20,6 +22,8 @@ public static class Inject
     services.AddScoped<IUpdateSocialNetworks, UpdateSocialNetworksHandler>();
     services.AddScoped<IUpdatePaymentInfosHandler,UpdatePaymentInfosHandler>();
     services.AddScoped<IAddPetPhotoHandler, AddPetPhotoHandler>();
+    services.AddScoped<IGetUrlPetPhotoHandler, GetUrlPetPhotoHandler>();
+    services.AddScoped<IRemovePetPhotoHandler, RemovePetPhotohandler>();
     services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
      
     return services;

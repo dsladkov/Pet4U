@@ -10,10 +10,11 @@ namespace Pet4U.Infrastructure.Providers;
 
 public class MinioProvider : IFileProvider
 {
+  private const int TIME_SECONDS_EXPIRE = 3600; 
     private readonly IMinioClient _minioClient;
     private readonly ILogger<MinioProvider> _logger;
 
-    public MinioProvider(IMinioClient minioClient, ILogger<MinioProvider> logger)
+  public MinioProvider(IMinioClient minioClient, ILogger<MinioProvider> logger)
   {
     _minioClient = minioClient;
     _logger = logger;
@@ -23,25 +24,19 @@ public class MinioProvider : IFileProvider
     CancellationToken cancellationToken = default)
   {
 
-    // var buckets = await _minioClient.ListBucketsAsync();
-
-    // var bucketStrings = string.Join(", ", buckets.Buckets.Select(x => x.Name));
-
     try
     {
-      var bucketExistArgs = new BucketExistsArgs().WithBucket("photos");
+      var bucketExistArgs = new BucketExistsArgs().WithBucket(fileData.BucketName);
 
       var bucketExist = await _minioClient.BucketExistsAsync(bucketExistArgs, cancellationToken);
 
       if(bucketExist == false)
       {
-        var makeBucketArg = new MakeBucketArgs().WithBucket("photos");
+        var makeBucketArg = new MakeBucketArgs().WithBucket(fileData.BucketName);
         await _minioClient.MakeBucketAsync(makeBucketArg, cancellationToken);
       }
 
-      //await using var stream = file.OpenReadStream();
-
-      var putObjectsArgs = new PutObjectArgs().WithBucket("photos")
+      var putObjectsArgs = new PutObjectArgs().WithBucket(fileData.BucketName)
                                 .WithStreamData(fileData.Stream)
                                 .WithObjectSize(fileData.Stream.Length)
                                 .WithObject(fileData.ObjectName.ToString());
@@ -55,4 +50,42 @@ public class MinioProvider : IFileProvider
       return Error.Failure("file.upload", "fail to upload file in minio");
     }
   }
+
+  public async Task<Result<string>> GetUrlFileAsync(UrlFileData file, CancellationToken cancellationToken = default)
+  {
+    try
+    {
+      var args = new PresignedGetObjectArgs()
+                     .WithBucket(file.BucketName)
+                     .WithObject(file.ObjectName)
+                     .WithExpiry(file.TimeExpire ?? TIME_SECONDS_EXPIRE);
+      var url = await _minioClient.PresignedGetObjectAsync(args);
+      return url;
+    }
+    catch (Exception ex)
+    {
+      _logger.LogError(ex, "fail url get from minio");
+      return Error.Failure("file.url.get", "fail url get from minio");
+    }
+  }
+
+  public async Task<Result> RemoveFileAsync(RemoveFileData file, CancellationToken cancellationToken = default)
+  {
+    try
+    {
+      var args = new RemoveObjectArgs()
+                    .WithBucket(file.BucketName)
+                    .WithObject(file.ObjectName);
+
+      await _minioClient.RemoveObjectAsync(args, cancellationToken);
+
+      return Result.Success();
+    }
+    catch (Exception ex)
+    {
+      _logger.LogError(ex, "fail to remove file from minio");
+      return Error.Failure("file.to.remove", "fail to remove file from minio");
+    }
+  }
+
 }
