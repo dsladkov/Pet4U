@@ -84,7 +84,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
       });
       var path = Guid.NewGuid().ToString();
       //var command = UploadFileCommand.ToCommand(stream,"photos", path);
-      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, path, path)));
+      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, "photos", path)));
       var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
       results.Add(result);
       

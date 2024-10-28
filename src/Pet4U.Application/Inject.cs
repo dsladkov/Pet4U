@@ -2,6 +2,7 @@
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
 using Pet4U.Application.UseCases.AddPetPhoto;
+using Pet4U.Application.UseCases.AddPetsMediaFiles;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.GetUrlPetPhoto;
@@ -24,6 +25,7 @@ public static class Inject
     services.AddScoped<IAddPetPhotoHandler, AddPetPhotoHandler>();
     services.AddScoped<IGetUrlPetPhotoHandler, GetUrlPetPhotoHandler>();
     services.AddScoped<IRemovePetPhotoHandler, RemovePetPhotohandler>();
+    services.AddScoped<IUploadMediaHandler, UploadMediaHandler>();
     services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
      
     return services;
