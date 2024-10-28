@@ -12,14 +12,14 @@ public class Species : Entity<SpeciesId>
   (
     SpeciesId id, 
     string title,
-    string description, 
-    List<Breed> breeds
+    string description//, 
+    //List<Breed> breeds
   ) : base(id)
 
   {
     Title = title;
     Description = description;
-    _breeds = breeds;
+    //_breeds = breeds;
   }
 
   private List<Breed> _breeds = [];
@@ -32,8 +32,8 @@ public class Species : Entity<SpeciesId>
   (
     SpeciesId id,
     string title,
-    string description, 
-    List<Breed> breeds
+    string description//, 
+   // List<Breed> breeds
   )
   {
     if(string.IsNullOrEmpty(title))
@@ -48,7 +48,6 @@ public class Species : Entity<SpeciesId>
     if(description.Length > Constants.MAX_HIGH_TEXT_LENGTH)
       return Errors.General.LengthIsInvalid("description");
     
-    return new Species(id, title, description, breeds);
+    return new Species(id, title, description);
   } 
-
 }
