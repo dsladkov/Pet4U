@@ -28,6 +28,8 @@ public class Species : Entity<SpeciesId>
   public string Title { get; private set; } = null!;
   public string Description { get; private set; } = null!;
 
+  public void AddBreeds(IReadOnlyCollection<Breed> breeds) => _breeds = breeds.ToList();
+
   public static Result<Species> Create
   (
     SpeciesId id,
