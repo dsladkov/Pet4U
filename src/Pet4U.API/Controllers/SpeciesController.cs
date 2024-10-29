@@ -10,7 +10,7 @@ public class SpeciesController : ApplicationController
   [HttpPost]
   public async Task<IActionResult> Create ([FromBody] CreateSpeciesRequest request, [FromServices] ICreateSpeciesHandler speciesHandler, CancellationToken cancellationToken = default)
   {
-    var command = CreateSpeciesRequest.ToCommand(request.Title, request.Description);
+    var command = CreateSpeciesRequest.ToCommand(request.title, request.description);
 
     var result = await speciesHandler.HandleAsync(command, cancellationToken);
     return result.ToResponse();
@@ -18,9 +18,9 @@ public class SpeciesController : ApplicationController
 
 
   [HttpPost("{id:guid}/breeds")]
-  public async Task<IActionResult> AddBreeds ([FromRoute] Guid speciesId, [FromBody] AddBreedsRequest request, [FromServices] IAddBreedsHandler addBreedsHandler, CancellationToken cancellationToken = default)
+  public async Task<IActionResult> AddBreeds ([FromRoute] Guid id, [FromBody] AddBreedsRequest request, [FromServices] IAddBreedsHandler addBreedsHandler, CancellationToken cancellationToken = default)
   {
-    var command =  AddBreedsRequest.ToCommand(speciesId, request.breeds);
+    var command =  AddBreedsRequest.ToCommand(id, request.breeds);
 
     var result = await addBreedsHandler.HandleAsync(command, cancellationToken);
     return result.ToResponse();

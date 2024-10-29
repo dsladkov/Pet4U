@@ -1,19 +1,7 @@
 namespace Pet4U.Application.UseCases.AddBreeds;
 
-public record AddBreedsRequest
+public record AddBreedsRequest(IReadOnlyCollection<BreedDto> breeds)
 {
-  // public string Title { get; } = string.Empty;
-  // public string Description { get; } = string.Empty;
-
-  public IReadOnlyCollection<BreedDto> breeds;
-
-  private AddBreedsRequest(IReadOnlyCollection<BreedDto> breedDtos)
-  {
-    // Title = title;
-    // Description = description;
-    breeds = breedDtos;
-  }
-
   public static AddBreedCommand ToCommand(Guid id, IReadOnlyCollection<BreedDto> breedDtos) => new (id, breedDtos);
 }
 
