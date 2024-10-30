@@ -18,16 +18,12 @@ public class Breed : Entity<Guid>, ISoftDeletable
 public void Delete()
     {
       if(!_isDeleted)
-      {
         _isDeleted = true;
-      }
     }
 
     public void Restore()
     {
       if(_isDeleted)
-      {
         _isDeleted = false;
-      }
     }
 }

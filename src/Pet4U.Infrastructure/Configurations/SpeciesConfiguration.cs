@@ -29,7 +29,7 @@ namespace Pet4U.Infrastructure
 
             builder.HasMany(s => s.Breeds)
                    .WithOne()
-                   .HasForeignKey("breed_id");
+                   .HasForeignKey("species_id");
         }
     }
 }
