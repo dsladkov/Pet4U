@@ -27,7 +27,7 @@ public class AddBreedsHandler : IAddBreedsHandler
     if(species.IsFailure)
       return species.Error;
 
-    var breeds = command.breedDtos.Select(b => new Breed(command.id, b.Title, b.Description));
+    var breeds = command.breedDtos.Select(b => new Breed( Guid.NewGuid(), b.Title, b.Description));
 
     species?.Value?.AddBreeds(breeds.ToList());
 
