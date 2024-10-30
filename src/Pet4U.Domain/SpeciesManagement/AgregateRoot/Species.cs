@@ -4,8 +4,9 @@ using Pet4U.Domain.SpeciesManagement.ValueObject;
 
 namespace Pet4U.Domain.SpeciesManagement.AgregateRoot;
 
-public class Species : Entity<SpeciesId>
+public class Species : Entity<SpeciesId>, ISoftDeletable
 {
+  private bool _isDeleted = false;
   public Species(SpeciesId id) : base(id){}
 
   private Species
@@ -53,5 +54,29 @@ public class Species : Entity<SpeciesId>
     return new Species(id, title, description);
   }
 
-  public static implicit operator Result<Guid>(Species species) => species.Id.Value;
+public void Delete()
+    {
+      if(!_isDeleted)
+      {
+        _isDeleted = true;
+        foreach(var breed in _breeds)
+        {
+          breed.Delete();
+        }
+      }
+    }
+
+    public void Restore()
+    {
+      if(_isDeleted)
+      {
+        _isDeleted = false;
+        foreach(var breed in _breeds)
+        {
+          breed.Restore();
+        }
+      }
+    }
+
+    public static implicit operator Result<Guid>(Species species) => species.Id.Value;
 }
