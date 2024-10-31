@@ -334,11 +334,9 @@ namespace Pet4U.Infrastructure.Migrations
                                         .HasColumnType("integer");
 
                                     b2.Property<string>("Link")
-                                        .IsRequired()
                                         .HasColumnType("text");
 
                                     b2.Property<string>("Title")
-                                        .IsRequired()
                                         .HasColumnType("text");
 
                                     b2.HasKey("SocialNetworksVolunteerId", "Id")
