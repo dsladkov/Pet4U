@@ -30,6 +30,10 @@ namespace Pet4U.Infrastructure
             builder.HasMany(s => s.Breeds)
                    .WithOne()
                    .HasForeignKey("species_id");
+                   
+            builder.Property<bool>("_isDeleted")
+                   .UsePropertyAccessMode(PropertyAccessMode.Field)
+                   .HasColumnName("is_deleted");
         }
     }
 }
