@@ -1,6 +1,7 @@
 
 using System.Data;
 using FluentValidation;
+using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.Validation;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.Shared.Ids;
@@ -10,11 +11,11 @@ using Pet4U.Domain.Volunteers;
 
 namespace Pet4U.Application.UseCases.UpdatePaymentInfos;
 
-  public record PaymentInfoDto
-  {
-    public string Title { get; set; } = null!;
-    public string Description { get; set; } = null!;
-  }
+  // public record PaymentInfoDto//(string title, string description)
+  // {
+  //   public string Title { get; set; } = null!; //= title;
+  //   public string Description { get; set; } = null!;
+  // }
 
 public record UpdatePaymentInfosCommand
 ( Guid VolunteerId,

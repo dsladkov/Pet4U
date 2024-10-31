@@ -10,7 +10,8 @@ using Pet4U.Domain.Volunteers;
 using Pet4U.Application.UseCases.Shared;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
-
+public record SocialNetworkDto(string title, string link);
+public record PaymentInfoDto(string title, string description);
 public record CreateVolunteerCommand
 (
   FullNameDto FullNameDto,
@@ -18,8 +19,8 @@ public record CreateVolunteerCommand
   string Description,
   int Experience,
   string Phone,
-  IReadOnlyCollection<PaymentInfo>? PaymentInfos,
-  IReadOnlyCollection<SocialNetwork>? SocialNetworks
+  IReadOnlyCollection<PaymentInfoDto>? PaymentInfos,
+  IReadOnlyCollection<SocialNetworkDto> SocialNetworks
 );
 public record CreateVolunteerRequest
 (
@@ -31,8 +32,8 @@ public record CreateVolunteerRequest
   string Description,
   int Experience,
   string Phone,
-  IReadOnlyCollection<PaymentInfo>? PaymentInfos,
-  IReadOnlyCollection<SocialNetwork>? SocialNetworks
+  IReadOnlyCollection<PaymentInfoDto>? PaymentInfos,
+  IReadOnlyCollection<SocialNetworkDto>? SocialNetworks
 )
 {
   public CreateVolunteerCommand ToCommand() => new(FullNameDto, Email, Description, Experience, Phone, PaymentInfos, SocialNetworks);
@@ -47,6 +48,8 @@ public class CreateVolunteerRequestValidator : AbstractValidator<CreateVolunteer
     RuleFor(c => c.Phone).MustBeValueObject(Phone.Create);
     // RuleFor(c => new {c.FirstName, c.LastName, c.MiddleName }).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
     RuleFor(c => c.FullNameDto).MustBeValueObject(x => FullName.Create(x.FirstName, x.LastName, x.MiddleName));
+    RuleFor(c => c.PaymentInfos).ForEach(x => x.MustBeValueObject(x => PaymentInfo.Create(x.title, x.description)));
+    RuleFor(c => c.SocialNetworks).ForEach(x => x.MustBeValueObject(x => SocialNetwork.Create(x.title, x.link)));
   }
 }
 

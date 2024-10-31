@@ -32,7 +32,7 @@ public class UpdateSocialNetworksHandler : IUpdateSocialNetworks
       return volunteerResult.Error;
 
    var socialNetworks =  from item in command.SocialNetworkDtos
-                         let sn = SocialNetwork.Create(item.Title, item.Link )
+                         let sn = SocialNetwork.Create(item.title, item.link )
                          select sn.Value;
 
   //var socialNetworks = command.SocialNetworkDtos.Select(s => SocialNetwork.Create(s.Title, s.Link).Value);
