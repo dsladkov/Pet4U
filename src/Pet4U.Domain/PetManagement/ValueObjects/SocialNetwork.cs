@@ -4,8 +4,8 @@ namespace Pet4U.Domain.Volunteers
 {
   public record SocialNetwork
   {
-    public string Title { get;}
-    public string Link { get;}
+    public string? Title { get;}
+    public string? Link { get;}
     public SocialNetwork(){}
 
     private SocialNetwork(string title, string link)
