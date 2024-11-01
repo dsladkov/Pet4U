@@ -39,8 +39,8 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public int? Experience { get; private set; }
     public Phone Phone { get; private set; } = null!;
 
-    public SocialNetworks? SocialNetworks { get; private set; } = null!;
-    public PaymentInfos? PaymentInfos { get; private set; } = null!;
+    public SocialNetworks SocialNetworks { get; private set; }
+    public PaymentInfos PaymentInfos { get; private set; }
   
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);

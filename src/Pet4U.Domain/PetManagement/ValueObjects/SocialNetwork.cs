@@ -6,6 +6,7 @@ namespace Pet4U.Domain.Volunteers
   {
     public string Title { get; set;} = null!;
     public string Link { get; set;} = null!;
+
     public SocialNetwork(){}
 
     private SocialNetwork(string title, string link)
