@@ -49,7 +49,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
     f.OpenReadStream();
    }
 
-   var command = UploadFileCommand.ToCommand(stream,"photos", path);
+   var command = UploadFileCommand.ToCommand(stream,path);
 
     var result = await addPetPhotoHandler.HandleAsync(command, cancellationToken);
 
@@ -57,6 +57,20 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
       return result.Error.ToResponse();
 
     return Ok(result.Value);
+  }
+
+
+  [HttpPost("new-media")]
+  public async Task<ActionResult> UploadFilesNew
+  ([FromServices] IUploadMediaHandler uploadMediaHandler,
+  //[FromServices] IFormFileCollectionProcessor processor,
+  IFormFileCollection files,
+  CancellationToken cancellationToken = default)
+  {
+    await using var processor = new FormFileCollectionProcessor();
+    var command = processor.Process(files);
+    var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
+    return result.ToResponse();
   }
 
   [HttpPost("media")]
@@ -71,7 +85,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
    List<Stream> streams = new List<Stream>();
    try
    {
-      await Parallel.ForEachAsync<IFormFile>(files, async (file, cancelltionToken) => {
+      Parallel.ForEach(files, (file) => {
 
       var stream = file.OpenReadStream();
 
@@ -80,7 +94,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
 
       var path = Guid.NewGuid().ToString();
       //var command = UploadFileCommand.ToCommand(stream,"photos", path);
-      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, "photos", path)));
+      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, path)));
       var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
       results.Add(result);
       
@@ -95,14 +109,10 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
     streams.ForEach(s => s.DisposeAsync());
    }
 
-;
-
     if(results.Any(r =>r .IsFailure))
       return results!.Where(r => r.IsFailure)!.FirstOrDefault()!.Error.ToResponse();
 
    return Ok(results.FirstOrDefault()!.Value);
-
-    
   }
 
   [HttpDelete("{id:guid}")]

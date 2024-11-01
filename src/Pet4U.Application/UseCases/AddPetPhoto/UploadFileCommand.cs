@@ -4,9 +4,9 @@ public record UploadFileCommand
 (
 
 Stream Stream,
-string BucketName,
+//string BucketName,
 string ObjectName
 )
 {
-public static UploadFileCommand ToCommand(Stream stream, string bucketName, string objectName) => new(stream, bucketName, objectName);
+public static UploadFileCommand ToCommand(Stream stream, string objectName) => new(stream, objectName);
 }
