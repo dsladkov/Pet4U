@@ -1,7 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Pet4U.Domain.PetManagement.AgregateRoot;
-using Pet4U.Domain.Shared;
 
 namespace Pet4U.Infrastructure.Interceptors;
 
