@@ -6,8 +6,8 @@ namespace Pet4U.Domain.Volunteers
   //Part of the JSON column
   public record PaymentInfo
   {
-    public string Title { get; set; } = null!;
-    public string Description { get; set; } = null!;
+    public string Title { get; } = null!;
+    public string Description { get; } = null!;
     public PaymentInfo(){}
     private PaymentInfo(string title, string description)
     {
