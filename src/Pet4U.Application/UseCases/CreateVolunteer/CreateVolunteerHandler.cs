@@ -1,8 +1,10 @@
+using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.Shared.ValueObjects;
+using Pet4U.Domain.Volunteers;
 
 namespace Pet4U.Application.UseCases.CreateVolunteer;
 
@@ -43,6 +45,9 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
     // if (phoneResult.IsFailure)
     //   return phoneResult.Error!;
 
+    var paymentInfos = command?.PaymentInfos?.Select(p => PaymentInfo.Create(p.title, p.description).Value).ToImmutableArray();
+    var socialNetwork = command?.SocialNetworks?.Select(s => SocialNetwork.Create(s.title, s.link).Value).ToImmutableArray();
+
     var volunteer = Volunteer.Create
     (
       id: VolunteerId.New(),
@@ -51,8 +56,8 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
       description: description.Value,
       experience: command.Experience,
       phone: phoneResult.Value,
-      socialNetworks: command.SocialNetworks,
-      paymentInfos: command.PaymentInfos
+      socialNetworks: socialNetwork, //command.SocialNetworks,
+      paymentInfos: paymentInfos//command.PaymentInfos
     );
 
     if (volunteer.IsFailure)

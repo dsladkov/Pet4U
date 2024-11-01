@@ -29,8 +29,8 @@ public class UpdatePaymentInfosHandler : IUpdatePaymentInfosHandler
       return volunteerResult.Error;
 
    var paymentInfos =  (from item in command.PaymentInfoDtos
-                         let sn = PaymentInfo.Create(item.Title, item.Description )
-                         select sn);
+                         let sn = PaymentInfo.Create(item.title, item.description )
+                         select sn.Value);
      
    volunteerResult?.Value?.UpdatePaymentInfos(new PaymentInfos(paymentInfos));
 
