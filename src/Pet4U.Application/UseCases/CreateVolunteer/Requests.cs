@@ -24,16 +24,13 @@ public record CreateVolunteerCommand
 );
 public record CreateVolunteerRequest
 (
-  //string FirstName,
-  //string LastName,
-  //string MiddleName,
   FullNameDto FullNameDto,
   string Email,
   string Description,
   int Experience,
   string Phone,
-  IReadOnlyCollection<PaymentInfoDto>? PaymentInfos,
-  IReadOnlyCollection<SocialNetworkDto>? SocialNetworks
+  IReadOnlyCollection<PaymentInfoDto> PaymentInfos,
+  IReadOnlyCollection<SocialNetworkDto> SocialNetworks
 )
 {
   public CreateVolunteerCommand ToCommand() => new(FullNameDto, Email, Description, Experience, Phone, PaymentInfos, SocialNetworks);
