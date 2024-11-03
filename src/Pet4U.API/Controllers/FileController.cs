@@ -5,21 +5,17 @@ using Minio.DataModel.Args;
 using Pet4U.API.Extensions;
 using Pet4U.Application.FileProdiver;
 using Pet4U.Application.UseCases.AddPetPhoto;
-using Pet4U.Application.UseCases.AddPetsMediaFiles;
 using Pet4U.Application.UseCases.GetUrlPetPhoto;
 using Pet4U.Application.UseCases.RemovePetPhotoFile;
-using Pet4U.Domain.Shared;
 
 namespace Pet4U.API.Controllers;
 
 public class FileController : ApplicationController
 {
-  private readonly ILogger<FileController> _logger;
-  //private readonly IMinioClient _minioClient;
-public FileController(ILogger<FileController> logger) //IMinioClient minioClient
+  private readonly IMinioClient _minioClient;
+public FileController(IMinioClient minioClient)
 {
-  _logger = logger;
- // _minioClient = minioClient;
+  _minioClient = minioClient;
 }
 
 
@@ -38,7 +34,6 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
   public async Task<IActionResult> CreateFile
   (IFormFile file, 
   [FromServices] IAddPetPhotoHandler addPetPhotoHandler,
-  IFormFileCollection formFiles,
   CancellationToken cancellationToken = default)
   {
    await using var stream = file.OpenReadStream();

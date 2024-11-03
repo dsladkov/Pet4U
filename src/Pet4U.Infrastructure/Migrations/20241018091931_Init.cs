@@ -21,8 +21,7 @@ namespace Pet4U.Infrastructure.Migrations
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false)
+                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -37,7 +36,6 @@ namespace Pet4U.Infrastructure.Migrations
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     experience = table.Column<int>(type: "integer", nullable: true),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
                     first_name = table.Column<string>(type: "text", nullable: false),
                     last_name = table.Column<string>(type: "text", nullable: false),
@@ -57,17 +55,16 @@ namespace Pet4U.Infrastructure.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    title = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    description = table.Column<string>(type: "character varying(2000)", maxLength: 2000, nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
-                    species_id = table.Column<Guid>(type: "uuid", nullable: true)
+                    title = table.Column<string>(type: "text", nullable: false),
+                    description = table.Column<string>(type: "text", nullable: false),
+                    breed_id = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_breed", x => x.id);
                     table.ForeignKey(
-                        name: "fk_breed_species_species_id",
-                        column: x => x.species_id,
+                        name: "fk_breed_species_breed_id",
+                        column: x => x.breed_id,
                         principalSchema: "core",
                         principalTable: "species",
                         principalColumn: "id");
@@ -94,7 +91,6 @@ namespace Pet4U.Infrastructure.Migrations
                     is_vaccinated = table.Column<bool>(type: "boolean", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: false),
                     create_date = table.Column<DateOnly>(type: "date", nullable: false),
-                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
                     volunteer_id = table.Column<Guid>(type: "uuid", nullable: true),
                     pet_data_breed_id = table.Column<Guid>(type: "uuid", nullable: false),
                     pet_data_species_id = table.Column<Guid>(type: "uuid", nullable: false)
@@ -107,8 +103,7 @@ namespace Pet4U.Infrastructure.Migrations
                         column: x => x.volunteer_id,
                         principalSchema: "core",
                         principalTable: "volunteers",
-                        principalColumn: "volunteer_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "volunteer_id");
                 });
 
             migrationBuilder.CreateTable(
@@ -133,10 +128,10 @@ namespace Pet4U.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "ix_breed_species_id",
+                name: "ix_breed_breed_id",
                 schema: "core",
                 table: "breed",
-                column: "species_id");
+                column: "breed_id");
 
             migrationBuilder.CreateIndex(
                 name: "ix_pet_photo_pet_id",

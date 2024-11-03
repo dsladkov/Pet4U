@@ -13,8 +13,8 @@ using Pet4U.Infrastructure;
 namespace Pet4U.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20241031063756_Init")]
-    partial class Init
+    [Migration("20241019144020_Second")]
+    partial class Second
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -225,10 +225,6 @@ namespace Pet4U.Infrastructure.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("title");
 
-                    b.Property<bool>("_isDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
-
                     b.HasKey("Id")
                         .HasName("pk_species");
 
@@ -244,29 +240,23 @@ namespace Pet4U.Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(2000)
-                        .HasColumnType("character varying(2000)")
+                        .HasColumnType("text")
                         .HasColumnName("description");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)")
+                        .HasColumnType("text")
                         .HasColumnName("title");
 
-                    b.Property<bool>("_isDeleted")
-                        .HasColumnType("boolean")
-                        .HasColumnName("is_deleted");
-
-                    b.Property<Guid?>("species_id")
+                    b.Property<Guid?>("breed_id")
                         .HasColumnType("uuid")
-                        .HasColumnName("species_id");
+                        .HasColumnName("breed_id");
 
                     b.HasKey("Id")
                         .HasName("pk_breed");
 
-                    b.HasIndex("species_id")
-                        .HasDatabaseName("ix_breed_species_id");
+                    b.HasIndex("breed_id")
+                        .HasDatabaseName("ix_breed_breed_id");
 
                     b.ToTable("breed", "core");
                 });
@@ -311,7 +301,7 @@ namespace Pet4U.Infrastructure.Migrations
 
             modelBuilder.Entity("Pet4U.Domain.PetManagement.AgregateRoot.Volunteer", b =>
                 {
-                    b.OwnsOne("Pet4U.Domain.ValueObjects.SocialNetworks", "SocialNetworks", b1 =>
+                    b.OwnsOne("Pet4U.Domain.ValueObjects.SocialNetworksList", "SocialNetworks", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
                                 .HasColumnType("uuid")
@@ -329,7 +319,7 @@ namespace Pet4U.Infrastructure.Migrations
 
                             b1.OwnsMany("Pet4U.Domain.Volunteers.SocialNetwork", "Data", b2 =>
                                 {
-                                    b2.Property<Guid>("SocialNetworksVolunteerId")
+                                    b2.Property<Guid>("SocialNetworksListVolunteerId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -337,25 +327,27 @@ namespace Pet4U.Infrastructure.Migrations
                                         .HasColumnType("integer");
 
                                     b2.Property<string>("Link")
+                                        .IsRequired()
                                         .HasColumnType("text");
 
                                     b2.Property<string>("Title")
+                                        .IsRequired()
                                         .HasColumnType("text");
 
-                                    b2.HasKey("SocialNetworksVolunteerId", "Id")
+                                    b2.HasKey("SocialNetworksListVolunteerId", "Id")
                                         .HasName("pk_volunteers");
 
                                     b2.ToTable("volunteers", "core");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("SocialNetworksVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_social_networks_volunteer_id");
+                                        .HasForeignKey("SocialNetworksListVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_social_networks_list_volunteer_id");
                                 });
 
                             b1.Navigation("Data");
                         });
 
-                    b.OwnsOne("Pet4U.Domain.Volunteers.PaymentInfos", "PaymentInfos", b1 =>
+                    b.OwnsOne("Pet4U.Domain.Volunteers.PaymentInfoList", "PaymentInfos", b1 =>
                         {
                             b1.Property<Guid>("VolunteerId")
                                 .HasColumnType("uuid")
@@ -373,7 +365,7 @@ namespace Pet4U.Infrastructure.Migrations
 
                             b1.OwnsMany("Pet4U.Domain.Volunteers.PaymentInfo", "Data", b2 =>
                                 {
-                                    b2.Property<Guid>("PaymentInfosVolunteerId")
+                                    b2.Property<Guid>("PaymentInfoListVolunteerId")
                                         .HasColumnType("uuid");
 
                                     b2.Property<int>("Id")
@@ -388,14 +380,14 @@ namespace Pet4U.Infrastructure.Migrations
                                         .IsRequired()
                                         .HasColumnType("text");
 
-                                    b2.HasKey("PaymentInfosVolunteerId", "Id")
+                                    b2.HasKey("PaymentInfoListVolunteerId", "Id")
                                         .HasName("pk_volunteers");
 
                                     b2.ToTable("volunteers", "core");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("PaymentInfosVolunteerId")
-                                        .HasConstraintName("fk_volunteers_volunteers_payment_infos_volunteer_id");
+                                        .HasForeignKey("PaymentInfoListVolunteerId")
+                                        .HasConstraintName("fk_volunteers_volunteers_payment_info_list_volunteer_id");
                                 });
 
                             b1.Navigation("Data");
@@ -410,8 +402,8 @@ namespace Pet4U.Infrastructure.Migrations
                 {
                     b.HasOne("Pet4U.Domain.SpeciesManagement.AgregateRoot.Species", null)
                         .WithMany("Breeds")
-                        .HasForeignKey("species_id")
-                        .HasConstraintName("fk_breed_species_species_id");
+                        .HasForeignKey("breed_id")
+                        .HasConstraintName("fk_breed_species_breed_id");
                 });
 
             modelBuilder.Entity("Pet4U.Domain.Volunteers.PetPhoto", b =>
