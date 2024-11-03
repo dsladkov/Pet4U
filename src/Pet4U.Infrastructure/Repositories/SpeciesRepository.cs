@@ -49,6 +49,7 @@ public class SpeciesRepository : ISpeciesRepository
     CancellationToken cancellationToken = default)
   {
     var species = await _dbContext.Species
+              .Include(s => s.Breeds)
               .FirstOrDefaultAsync(s => s.Title == title, cancellationToken);
 
     return species;

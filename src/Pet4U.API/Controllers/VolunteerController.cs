@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.API.Extensions;
+using Pet4U.Application.UseCases.CreatePet;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
 using Pet4U.Application.UseCases.UpdateMainInfo;
@@ -62,6 +63,21 @@ public class VolunteerController : ApplicationController //ControllerBase
     //   return result.Error.ToResponse(); //result.Error.ToResponse();
     
     // return Ok(result.Value); //Ok(Envelope.Ok(result ));
+  }
+
+  [HttpPost("{id:guid}/pets")]
+  public async Task<IActionResult> CreatePet
+  ([FromRoute] Guid id,
+    [FromServices] ICreatePetHandler _createPetHandler, 
+  //[FromServices] IValidator<CreateVolunteerRequest> requestValidator,
+  [FromBody] CreatePetRequest pet, 
+  CancellationToken cancellationToken = default)
+  {
+    var petCommand = pet.ToCommand(id);
+
+    var result = await _createPetHandler.HandleAsync(petCommand, cancellationToken);
+    
+    return result.ToResponse();
   }
 
   //volunteers/id/main-info

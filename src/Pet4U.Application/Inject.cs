@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Pet4U.Application.UseCases.AddBreeds;
 using Pet4U.Application.UseCases.AddPetPhoto;
 using Pet4U.Application.UseCases.AddPetsMediaFiles;
+using Pet4U.Application.UseCases.CreatePet;
 using Pet4U.Application.UseCases.CreateSpecies;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
@@ -30,6 +31,7 @@ public static class Inject
     services.AddScoped<IUploadMediaHandler, UploadMediaHandler>();
     services.AddScoped<ICreateSpeciesHandler, CreateSpeciesHandler>();
     services.AddScoped<IAddBreedsHandler, AddBreedsHandler>();
+    services.AddScoped<ICreatePetHandler, CreatePetHandler>();
     services.AddValidatorsFromAssembly(typeof(Inject).Assembly);
      
     return services;
