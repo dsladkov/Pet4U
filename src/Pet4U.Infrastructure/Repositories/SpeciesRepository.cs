@@ -43,6 +43,17 @@ public class SpeciesRepository : ISpeciesRepository
     return species;
   }
 
+
+  public async Task<Result<Species?>>GetByNameAsync(
+    string title, 
+    CancellationToken cancellationToken = default)
+  {
+    var species = await _dbContext.Species
+              .FirstOrDefaultAsync(s => s.Title == title, cancellationToken);
+
+    return species;
+  }
+
   public async Task<Result<Guid>> Save(
     Species species, 
     CancellationToken cancellationToken = default)

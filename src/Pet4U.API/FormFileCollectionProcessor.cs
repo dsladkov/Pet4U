@@ -14,7 +14,7 @@ public class FormFileCollectionProcessor : IAsyncDisposable, IFormFileCollection
     Parallel.ForEach(files, file => {
       var stream = file.OpenReadStream();
 
-      commands.Add(new UploadFileCommand(stream, file.Name));
+      commands.Add(new UploadFileCommand(stream, "photos",file.Name));
     });
 
     return UploadFilesCommand.ToCommand(commands);

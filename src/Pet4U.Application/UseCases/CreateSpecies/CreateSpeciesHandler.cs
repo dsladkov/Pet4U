@@ -19,6 +19,11 @@ public class CreateSpeciesHandler : ICreateSpeciesHandler
 
   public async Task<Result<Guid>> HandleAsync(CreateSpeciesCommand command, CancellationToken cancellationToken = default)
   {
+
+    var speciesByName = await _speciesRepository.GetByNameAsync(command.Title, cancellationToken);
+    if (speciesByName.IsSuccess)
+      return Errors.General.ValueIsInvalid(speciesByName?.Value?.Title);
+      
     var species = Species.Create
     (
       id: SpeciesId.New(),

@@ -14,6 +14,12 @@ namespace Pet4U.Infrastructure
             builder.ToTable("breed");
             builder.HasKey(b => b.Id);
 
+            builder.Property(s => s.Id)
+                   .HasConversion(
+                     Id => Id,
+                     value => value
+                   );
+
             builder.Property(b => b.Title)
                    .IsRequired()
                    .HasMaxLength(Constants.MAX_LOW_TEXT_LENGTH);
@@ -21,7 +27,7 @@ namespace Pet4U.Infrastructure
             builder.Property(b => b.Description)
                    .IsRequired()
                    .HasMaxLength(Constants.MAX_HIGH_TEXT_LENGTH);
-                                      
+
             builder.Property<bool>("_isDeleted")
                    .UsePropertyAccessMode(PropertyAccessMode.Field)
                    .HasColumnName("is_deleted");

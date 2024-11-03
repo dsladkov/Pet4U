@@ -18,4 +18,9 @@ public interface ISpeciesRepository
   Task<Result<Guid>> Save(
     Species species, 
     CancellationToken cancellationToken = default);
+
+
+  Task<Result<Species?>>GetByNameAsync(
+    string title, 
+    CancellationToken cancellationToken = default);
 }

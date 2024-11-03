@@ -27,9 +27,11 @@ public class AddBreedsHandler : IAddBreedsHandler
     if(species.IsFailure)
       return species.Error;
 
-    var breeds = command.breedDtos.Select(b => new Breed( Guid.NewGuid(), b.Title, b.Description));
+    var breeds = command.breedDtos.Select(b => new Breed( Guid.Empty, b.Title, b.Description));
 
-    species?.Value?.AddBreeds(breeds.ToList());
+    var addedBreeds = species?.Value?.AddBreeds(breeds.ToList());
+    if(addedBreeds.IsFailure)
+      return addedBreeds.Error;
 
     var speciesId = await _speciesRepository.Save(species.Value, cancellationToken);
     _logger.LogInformation("Species : {Id} has been created", species.Value.Id);

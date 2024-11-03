@@ -1,3 +1,4 @@
+using System.Runtime.Intrinsics.X86;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.Shared.Ids;
 using Pet4U.Domain.SpeciesManagement.ValueObject;
@@ -29,7 +30,21 @@ public class Species : Entity<SpeciesId>, ISoftDeletable
   public string Title { get; private set; } = null!;
   public string Description { get; private set; } = null!;
 
-  public void AddBreeds(IReadOnlyCollection<Breed> breeds) => _breeds = breeds.ToList();
+  public Result<Guid> AddBreeds(IReadOnlyCollection<Breed> breeds)
+  {
+      var result =
+            from inb  in _breeds
+            join exb in breeds
+              on inb.Title equals exb.Title
+            select inb.Title;
+      
+      if(result != null && result.Any())
+      {
+        return Errors.General.ValueIsInvalid(string.Join(", ", result));
+      }
+    _breeds.AddRange(breeds);
+    return this.Id.Value;
+  }
 
   public static Result<Species> Create
   (
