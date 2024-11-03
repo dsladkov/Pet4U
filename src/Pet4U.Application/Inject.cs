@@ -1,6 +1,7 @@
 
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using Pet4U.Application.UseCases.AddBreeds;
 using Pet4U.Application.UseCases.AddPetPhoto;
 using Pet4U.Application.UseCases.AddPetsMediaFiles;
 using Pet4U.Application.UseCases.CreatePet;
