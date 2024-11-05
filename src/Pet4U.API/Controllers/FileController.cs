@@ -43,12 +43,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
   {
    await using var stream = file.OpenReadStream();
    var path = Guid.NewGuid().ToString();
-
-   foreach(var f in formFiles.ToArray())
-   {
-    f.OpenReadStream();
-   }
-
+   
    var command = UploadFileCommand.ToCommand(stream,"photos",path);
 
     var result = await addPetPhotoHandler.HandleAsync(command, cancellationToken);
