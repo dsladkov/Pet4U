@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.SpeciesManagement.AgregateRoot;
+using Pet4U.Domain.SpeciesManagement.ValueObject;
 using Pet4U.Infrastructure.Interceptors;
 
 namespace Pet4U.Infrastructure;
@@ -18,6 +19,7 @@ public sealed class ApplicationDbContext
 
   public DbSet<Volunteer> Volunteers => Set<Volunteer>();
   public DbSet<Species> Species => Set<Species>();
+  //public DbSet<Breed> breeds=> Set<Breed>();
 
   protected override void OnModelCreating(ModelBuilder modelBuilder)
   {

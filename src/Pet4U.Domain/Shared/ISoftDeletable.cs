@@ -1,4 +1,4 @@
-namespace Pet4U.Domain.PetManagement.AgregateRoot
+namespace Pet4U.Domain.Shared
 {
     public interface ISoftDeletable
     {

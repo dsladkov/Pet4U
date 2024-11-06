@@ -7,8 +7,6 @@ public record SocialNetworks
   public IReadOnlyCollection<SocialNetwork>? Data {get;}
 
   public SocialNetworks(IEnumerable<SocialNetwork> socialNetworks) => Data = socialNetworks?.ToList();
-  public SocialNetworks(IEnumerable<SocialNetwork> socialNetworks) => Data = socialNetworks?.ToList();
-
 
 
   // ef core

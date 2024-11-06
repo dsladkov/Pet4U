@@ -5,17 +5,21 @@ using Minio.DataModel.Args;
 using Pet4U.API.Extensions;
 using Pet4U.Application.FileProdiver;
 using Pet4U.Application.UseCases.AddPetPhoto;
+using Pet4U.Application.UseCases.AddPetsMediaFiles;
 using Pet4U.Application.UseCases.GetUrlPetPhoto;
 using Pet4U.Application.UseCases.RemovePetPhotoFile;
+using Pet4U.Domain.Shared;
 
 namespace Pet4U.API.Controllers;
 
 public class FileController : ApplicationController
 {
-  private readonly IMinioClient _minioClient;
-public FileController(IMinioClient minioClient)
+  private readonly ILogger<FileController> _logger;
+  //private readonly IMinioClient _minioClient;
+public FileController(ILogger<FileController> logger) //IMinioClient minioClient
 {
-  _minioClient = minioClient;
+  _logger = logger;
+ // _minioClient = minioClient;
 }
 
 
@@ -34,12 +38,13 @@ public FileController(IMinioClient minioClient)
   public async Task<IActionResult> CreateFile
   (IFormFile file, 
   [FromServices] IAddPetPhotoHandler addPetPhotoHandler,
+  IFormFileCollection formFiles,
   CancellationToken cancellationToken = default)
   {
    await using var stream = file.OpenReadStream();
    var path = Guid.NewGuid().ToString();
-
-   var command = UploadFileCommand.ToCommand(stream,"photos", path);
+   
+   var command = UploadFileCommand.ToCommand(stream,"photos",path);
 
     var result = await addPetPhotoHandler.HandleAsync(command, cancellationToken);
 
@@ -47,6 +52,62 @@ public FileController(IMinioClient minioClient)
       return result.Error.ToResponse();
 
     return Ok(result.Value);
+  }
+
+
+  [HttpPost("new-media")]
+  public async Task<ActionResult> UploadFilesNew
+  ([FromServices] IUploadMediaHandler uploadMediaHandler,
+  //[FromServices] IFormFileCollectionProcessor processor,
+  IFormFileCollection files,
+  CancellationToken cancellationToken = default)
+  {
+    await using var processor = new FormFileCollectionProcessor();
+    var command = processor.Process(files);
+    var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
+    return result.ToResponse();
+  }
+
+  [HttpPost("media")]
+  public async Task<ActionResult> UploadFiles
+  ([FromServices] IUploadMediaHandler uploadMediaHandler,
+  IFormFileCollection files,
+  CancellationToken cancellationToken = default)
+  {
+   
+   List<Result<string[]>> results = [];
+
+   List<Stream> streams = new List<Stream>();
+   try
+   {
+      Parallel.ForEach(files, (file) => {
+
+      var stream = file.OpenReadStream();
+
+      streams.Add(stream);
+      });
+
+      var path = Guid.NewGuid().ToString();
+      //var command = UploadFileCommand.ToCommand(stream,"photos", path);
+      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, "photos",path)));
+      var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
+      results.Add(result);
+      
+      return results.First().ToResponse();
+   }
+   catch (Exception ex)
+   {
+    _logger.LogError(ex, ex.Message);
+   }
+   finally
+   {
+    streams.ForEach(s => s.DisposeAsync());
+   }
+
+    if(results.Any(r =>r .IsFailure))
+      return results!.Where(r => r.IsFailure)!.FirstOrDefault()!.Error.ToResponse();
+
+   return Ok(results.FirstOrDefault()!.Value);
   }
 
   [HttpDelete("{id:guid}")]
