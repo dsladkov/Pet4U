@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
+using Pet4U.Application.Database;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
 using Pet4U.Domain.Shared.Ids;
@@ -13,11 +14,13 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
 
   private readonly IVolunteersRepository _volunteerRepository;
     private readonly ILogger<CreateVolunteerHandler> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public CreateVolunteerHandler(IVolunteersRepository volunteerRepository, ILogger<CreateVolunteerHandler> logger)
+    public CreateVolunteerHandler(IVolunteersRepository volunteerRepository, IUnitOfWork unitOfWork ,ILogger<CreateVolunteerHandler> logger)
   {
     _volunteerRepository = volunteerRepository;
     _logger = logger;
+        _unitOfWork = unitOfWork;
   }
   public async Task<Result<Guid>> HandleAsync
   (
@@ -63,7 +66,8 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
     if (volunteer.IsFailure)
       return volunteer.Error!;
 
-    var result = await _volunteerRepository.AddAsync(volunteer.Value, cancellationToken);
+    var result = _volunteerRepository.Add(volunteer.Value, cancellationToken);
+    await _unitOfWork.SaveChanges(cancellationToken);
     _logger.LogInformation("Volunteer Id: {Id} has been created", volunteer.Value.Id);
     return result;
   }

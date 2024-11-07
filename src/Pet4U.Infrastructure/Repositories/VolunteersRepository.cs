@@ -22,7 +22,7 @@ public class VolunteersRepository : IVolunteersRepository
   {
     await _dbContext.Volunteers.AddAsync(volunteer, cancellationToken);
 
-    await _dbContext.SaveChangesAsync(cancellationToken);
+    //await _dbContext.SaveChangesAsync(cancellationToken);
 
     return volunteer;
   }
@@ -41,27 +41,45 @@ public class VolunteersRepository : IVolunteersRepository
     return volunteer;
   }
 
-  public async Task<Result<Guid>> Save(
-    Volunteer volunteer, 
-    CancellationToken cancellationToken = default)
-  {
-    //entries for checking the state of Volunteer entity (Changed)
-    //var entries1 = _dbContext.ChangeTracker.Entries<Volunteer>();
+  public Result<Guid> Add( Volunteer volunteer,CancellationToken cancellationToken = default)
+    {
+        //entries for checking the state of Volunteer entity (Changed)
+        //var entries1 = _dbContext.ChangeTracker.Entries<Volunteer>();
 
-    //_dbContext.Update(volunteer);
+        //_dbContext.Update(volunteer);
 
-    //var entries2 = _dbContext.ChangeTracker.Entries<Volunteer>();
+        //var entries2 = _dbContext.ChangeTracker.Entries<Volunteer>();
 
-    _dbContext.Volunteers.Attach(volunteer); //This line of code for track entity. Ef core should do it by yourself. 
+        _dbContext.Volunteers.Add(volunteer); //This line of code for track entity. Ef core should do it by yourself. 
 
-    await _dbContext.SaveChangesAsync(cancellationToken);
+        //await _dbContext.SaveChangesAsync(cancellationToken);
 
-    //var entries3 = _dbContext.ChangeTracker.Entries<Volunteer>();
+        //var entries3 = _dbContext.ChangeTracker.Entries<Volunteer>();
 
-    return volunteer;
-  }
+        return volunteer;
+    }
 
-  public async Task<Result<Volunteer?>>Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
+    //public Result<Guid> Save(
+    //  Volunteer volunteer, 
+    //  CancellationToken cancellationToken = default)
+    //{
+    //  //entries for checking the state of Volunteer entity (Changed)
+    //  //var entries1 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    //  //_dbContext.Update(volunteer);
+
+    //  //var entries2 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    //  _dbContext.Volunteers.Attach(volunteer); //This line of code for track entity. Ef core should do it by yourself. 
+
+    //  //await _dbContext.SaveChangesAsync(cancellationToken);
+
+    //  //var entries3 = _dbContext.ChangeTracker.Entries<Volunteer>();
+
+    //  return volunteer;
+    //}
+
+    public Result<Volunteer?> Delete(Volunteer volunteer, CancellationToken cancellationToken = default)
   {
     // var result = _dbContext.ChangeTracker.Entries<Volunteer>()
     // .Where(v => v.State == EntityState.Detached)
@@ -69,7 +87,7 @@ public class VolunteersRepository : IVolunteersRepository
 
     _dbContext.Volunteers.Remove(volunteer);
 
-    await _dbContext.SaveChangesAsync(cancellationToken);
+    //await _dbContext.SaveChangesAsync(cancellationToken);
 
     return volunteer;
   }

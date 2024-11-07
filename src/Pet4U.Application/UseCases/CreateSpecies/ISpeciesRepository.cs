@@ -23,4 +23,6 @@ public interface ISpeciesRepository
   Task<Result<Species?>>GetByNameAsync(
     string title, 
     CancellationToken cancellationToken = default);
+
+    Result<Guid> Add(Species species);
 }

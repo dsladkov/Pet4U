@@ -29,7 +29,14 @@ public class SpeciesRepository : ISpeciesRepository
     return species;
   }
 
-  public async Task<Result<Species?>>GetByIdAsync(
+    public Result<Guid> Add(Species species)
+    {
+        _dbContext.Species.Add(species);
+
+        return species;
+    }
+
+    public async Task<Result<Species?>>GetByIdAsync(
     SpeciesId speciesId, 
     CancellationToken cancellationToken = default)
   {

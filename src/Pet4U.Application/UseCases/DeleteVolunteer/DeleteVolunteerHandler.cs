@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Pet4U.Application.Database;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
@@ -13,13 +14,15 @@ namespace Pet4U.Application.UseCases.DeleteVolunteer;
 public class DeleteVolunteerHandler : IDeleteVolunteerHandler
 {
 
-  private readonly IVolunteersRepository _volunteerRepository;
+    private readonly IVolunteersRepository _volunteerRepository;
     private readonly ILogger<DeleteVolunteerHandler> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public DeleteVolunteerHandler(IVolunteersRepository volunteerRepository, ILogger<DeleteVolunteerHandler> logger)
+    public DeleteVolunteerHandler(IVolunteersRepository volunteerRepository, IUnitOfWork unitOfWork ,ILogger<DeleteVolunteerHandler> logger)
   {
     _volunteerRepository = volunteerRepository;
     _logger = logger;
+    _unitOfWork = unitOfWork;
   }
   public async Task<Result<Guid>> HandleAsync
   (
@@ -33,7 +36,8 @@ public class DeleteVolunteerHandler : IDeleteVolunteerHandler
 
     volunteerResult.Value.Delete(); //If delete interceptor is disabled
 //  volunteerResult.Value.SetInactive();
-    var volunteerDeleted = await _volunteerRepository.Save(volunteerResult.Value,cancellationToken); //Instead of Delete it will be marked as deleted at entity bool prop
+    var volunteerDeleted = _volunteerRepository.Add(volunteerResult.Value,cancellationToken); //Instead of Delete it will be marked as deleted at entity bool prop
+    await _unitOfWork.SaveChanges(cancellationToken);
     
     _logger.LogInformation("Volunteer with id {0} is deleted", volunteerResult.Value.Id);
     return volunteerDeleted.Value;

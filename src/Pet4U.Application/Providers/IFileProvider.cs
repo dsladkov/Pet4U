@@ -8,6 +8,10 @@ public interface IFileProvider
   Task<Result<string>> UploadFileAsync(
       FileData fileData,
       CancellationToken cancellationToken = default);
+
+    Task<Result<IReadOnlyCollection<string>>> UploadFiles
+        (IEnumerable<FileData> files,
+        CancellationToken cancellationToken = default);
     Task<Result<string>> UploadFileWithSemaphoreAsync(
     FileData fileData,
     SemaphoreSlim semaphore,

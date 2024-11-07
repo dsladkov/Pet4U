@@ -1,5 +1,6 @@
 using System.Collections.Immutable;
 using Microsoft.Extensions.Logging;
+using Pet4U.Application.Database;
 using Pet4U.Application.UseCases.CreateSpecies;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Domain.PetManagement.AgregateRoot;
@@ -13,18 +14,21 @@ namespace Pet4U.Application.UseCases.CreatePet;
 public class CreatePetHandler : ICreatePetHandler
 {
 
-  private readonly IVolunteersRepository _volunteerRepository;
-  private readonly ISpeciesRepository _speciesRepository;
-  private readonly ILogger<CreatePetHandler> _logger;
+    private readonly IVolunteersRepository _volunteerRepository;
+    private readonly ISpeciesRepository _speciesRepository;
+    private readonly ILogger<CreatePetHandler> _logger;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreatePetHandler
     (IVolunteersRepository volunteerRepository, 
     ISpeciesRepository speciesRepository,
+    IUnitOfWork unitOfWork,
     ILogger<CreatePetHandler> logger)
   {
     _volunteerRepository = volunteerRepository;
     _speciesRepository = speciesRepository;
     _logger = logger;
+    _unitOfWork = unitOfWork;
   }
   public async Task<Result<Guid>> HandleAsync
   (
@@ -35,6 +39,8 @@ public class CreatePetHandler : ICreatePetHandler
     var voluteerId = VolunteerId.Create(command.id);
 
     var voluteerResult = await _volunteerRepository.GetByIdAsync(voluteerId, cancellationToken);
+
+    //var transaction = await _unitOfWork.BeginTransaction(cancellationToken);
 
     if (voluteerResult.IsFailure)
       return voluteerResult.Error!;
@@ -74,7 +80,10 @@ public class CreatePetHandler : ICreatePetHandler
 
     voluteerResult.Value.AddPet(pet);
 
-    var result = await _volunteerRepository.Save(voluteerResult.Value, cancellationToken);
+    var result = _volunteerRepository.Add(voluteerResult.Value, cancellationToken);
+
+    await _unitOfWork.SaveChanges(cancellationToken);
+
     _logger.LogInformation("Volunteer Id: {Id} has added new pet {id}", voluteerResult.Value.Id, pet.Id.Value);
     return result;
   }

@@ -1,4 +1,5 @@
 using Microsoft.Extensions.Logging;
+using Pet4U.Application.Database;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Domain.PetManagement.AgregateRoot;
 using Pet4U.Domain.Shared;
@@ -12,14 +13,17 @@ namespace Pet4U.Application.UseCases.UpdateMainInfo;
 
 public class UpdateMainInfoHandler : IUpdateMainInfoHandler
 {
-  private readonly IVolunteersRepository _volunteerRepository;
+    private readonly IVolunteersRepository _volunteerRepository;
     private readonly ILogger<UpdateMainInfoHandler> _logger;
 
-    public UpdateMainInfoHandler(IVolunteersRepository volunteerRepository, ILogger<UpdateMainInfoHandler> logger)
-  {
-    _volunteerRepository = volunteerRepository;
-    _logger = logger;
-  }
+    private readonly IUnitOfWork _unitOfWork;
+
+    public UpdateMainInfoHandler(IVolunteersRepository volunteerRepository, IUnitOfWork unitOfWork,ILogger<UpdateMainInfoHandler> logger)
+      {
+        _volunteerRepository = volunteerRepository;
+        _logger = logger;
+        _unitOfWork = unitOfWork;
+      }
   public async Task<Result<Guid>> HandleAsync
   (
     UpdateMainInfoVolunteerCommand command,
@@ -43,8 +47,9 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
 
     volunteerResult?.Value?.UpdateMainInfo(fullName, command.Email, command.Experience, descriptionResult, phoneResult);
 
-    var volunteerUpdated = await _volunteerRepository.Save(volunteerResult.Value,cancellationToken);
-    
+    var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value,cancellationToken);
+    await _unitOfWork.SaveChanges(cancellationToken);
+
     _logger.LogInformation("Volunteer with id {0} has been updated with description {1} and phone {2}", volunteerResult.Value.Id, volunteerResult.Value.Description, volunteerResult.Value.Phone);
     return volunteerUpdated;
   }

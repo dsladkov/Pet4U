@@ -11,6 +11,7 @@ using Minio.Helper;
 using Pet4U.Infrastructure.Providers;
 using Pet4U.Application.UseCases.Providers;
 using Pet4U.Application.UseCases.CreateSpecies;
+using Pet4U.Application.Database;
 
 namespace Pet4U.Infrastructure;
 
@@ -21,6 +22,7 @@ public static class Inject
     services.AddScoped<ApplicationDbContext>();
     services.AddScoped<IVolunteersRepository, VolunteersRepository>();
     services.AddScoped<ISpeciesRepository, SpeciesRepository>();
+    services.AddScoped<IUnitOfWork, UnitOfWork>();
     
     //services.AddSingleton<SoftDeleteInterceptor>();
     services.AddMinio(configuration);
