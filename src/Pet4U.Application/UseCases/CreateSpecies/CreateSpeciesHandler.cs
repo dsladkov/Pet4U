@@ -21,7 +21,7 @@ public class CreateSpeciesHandler : ICreateSpeciesHandler
   {
 
     var speciesByName = await _speciesRepository.GetByNameAsync(command.Title, cancellationToken);
-    if (speciesByName.IsSuccess)
+    if (!speciesByName.IsSuccess)
       return Errors.General.ValueIsInvalid(speciesByName?.Value?.Title);
       
     var species = Species.Create

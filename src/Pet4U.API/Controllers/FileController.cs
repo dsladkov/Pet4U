@@ -75,7 +75,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
   CancellationToken cancellationToken = default)
   {
    
-   List<Result<string[]>> results = [];
+   List<Result<IReadOnlyList<string>>> results = [];
 
    List<Stream> streams = new List<Stream>();
    try
@@ -112,7 +112,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
 
   [HttpDelete("{id:guid}")]
   public async Task<IActionResult> RemovePhoto
-  ([FromRoute] string id,
+  ([FromRoute] Guid id,
   [FromServices] IRemovePetPhotoHandler handler,
   CancellationToken cancellationToken = default)
   {

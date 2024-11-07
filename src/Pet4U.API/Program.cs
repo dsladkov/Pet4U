@@ -48,6 +48,12 @@ builder.Services.AddValidation();
 //     o.CombineLogs = true;
 // });
 
+builder.Services.AddTransient<IConfiguration>(sp =>
+{
+    IConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
+    configurationBuilder.AddJsonFile("appsettings.json");
+    return configurationBuilder.Build();
+});
 
 builder.Services.AddSerilog((services, lc) => lc
     .ReadFrom.Configuration(builder.Configuration)

@@ -19,7 +19,7 @@ public class UploadMediaHandler : IUploadMediaHandler
   }
 
 
-  public async Task<Result<string[]>> HandleAsync
+  public async Task<Result<IReadOnlyList<string>>> HandleAsync
   (
     UploadFilesCommand command,
     CancellationToken cancellationToken
@@ -33,8 +33,8 @@ public class UploadMediaHandler : IUploadMediaHandler
    
         await Parallel.ForEachAsync( command.uploadFilesCommand, async(file, cancellationToken) => {
 
-        var fileData = new FileData(file.Stream, file.BucketName, file.ObjectName);
-        var result = await _fileProvider.UploadFileAsync(fileData, cancellationToken);
+        var fileData = new FileData(file.Stream, file.BucketName, Guid.NewGuid().ToString() + file.ObjectName.Substring(file.ObjectName.IndexOf('.') -1));
+        var result = await _fileProvider.UploadFileWithSemaphoreAsync(fileData, semaphoreSlim, cancellationToken);
         results.Add(result);
         });
     }
@@ -48,6 +48,6 @@ public class UploadMediaHandler : IUploadMediaHandler
       _ = semaphoreSlim.Release(MAX_CONCURRENT_REQUESTS);
     }
 
-    return Result<string[]>.Success(results.Select(r => r.Value).ToArray());
+    return Result<IReadOnlyList<string>>.Success(results.Select(r => r.Value).ToList().AsReadOnly());
   }
 }

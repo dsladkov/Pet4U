@@ -4,13 +4,13 @@ namespace Pet4U.Domain.Shared;
 
 public class ValueObjectList<T> : IReadOnlyList<T>
 {
-    public IReadOnlyList<T> Values { get; }
+    public IReadOnlyList<T> Values { get; } = null!;
     public T this[int index] => Values[index];
 
     public int Count => Values.Count;
 
 
-    public ValueObjectList() { }
+    private ValueObjectList() { }
     public ValueObjectList(IEnumerable<T> list)
     {
         Values = new List<T>(list).AsReadOnly();
@@ -25,7 +25,7 @@ public class ValueObjectList<T> : IReadOnlyList<T>
 
 
     public static implicit operator ValueObjectList<T>(List<T> list) =>
-        new ValueObjectList<T>(list);
+        new (list);
 
     public static implicit operator List<T>(ValueObjectList<T> list) =>
         list.Values.ToList();

@@ -3,10 +3,10 @@ namespace Pet4U.Application.UseCases.RemovePetPhotoFile;
 public record RemoveFileCommand
 (
 string BucketName,
-string ObjectName,
+Guid Id,
 string VersionId
 )
 {
-public static RemoveFileCommand ToCommand(string bucketName, string objectName, string versionId) 
-=> new(bucketName, objectName, versionId);
+public static RemoveFileCommand ToCommand(string bucketName, Guid id, string versionId) 
+=> new(bucketName, id, versionId);
 }

@@ -24,7 +24,7 @@ public class RemovePetPhotohandler : IRemovePetPhotoHandler
     CancellationToken cancellationToken
   )
   {
-    var file = new RemoveFileData(command.BucketName, command.ObjectName,null);
+    var file = new RemoveFileData(command.BucketName, command.Id,null);
     return await _fileProvider.RemoveFileAsync(file, cancellationToken);
   }
 }
