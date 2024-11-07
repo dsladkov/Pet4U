@@ -8,7 +8,7 @@ namespace Pet4U.Application.UseCases.AddPetsMediaFiles;
 
 public class UploadMediaHandler : IUploadMediaHandler
 {
-  private const int MAX_CONCURRENT_REQUESTS = 10;
+  //private const int MAX_CONCURRENT_REQUESTS = 10;
   private readonly IFileProvider _fileProvider;
     private readonly ILogger<UploadMediaHandler> _logger;
 
