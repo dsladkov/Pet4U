@@ -1,6 +1,7 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using Pet4U.API.Extensions;
+using Pet4U.Application.UseCases.AddPetsMediaFiles;
 using Pet4U.Application.UseCases.CreatePet;
 using Pet4U.Application.UseCases.CreateVolunteer;
 using Pet4U.Application.UseCases.DeleteVolunteer;
@@ -63,6 +64,22 @@ public class VolunteerController : ApplicationController //ControllerBase
     //   return result.Error.ToResponse(); //result.Error.ToResponse();
     
     // return Ok(result.Value); //Ok(Envelope.Ok(result ));
+  }
+
+    [HttpPost("{volunteerId:guid}/pets/{petId:guid}")]
+  public async Task<IActionResult> CreatePet
+  ([FromRoute] Guid volunteerId,
+   [FromRoute] Guid petId,
+   [FromServices] IUploadMediaHandler _uploadMediaHandler,
+   IFormFileCollection files,
+   CancellationToken cancellationToken = default)
+  {
+    await using var processor = new FormFileCollectionProcessor();
+    var command = processor.Process(files, volunteerId, petId);
+
+    var result = await _uploadMediaHandler.HandleAsync(command, cancellationToken);
+    
+    return result.ToResponse();
   }
 
   [HttpPost("{id:guid}/pets")]

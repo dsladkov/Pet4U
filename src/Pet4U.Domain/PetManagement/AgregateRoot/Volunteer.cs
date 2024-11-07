@@ -45,6 +45,8 @@ namespace Pet4U.Domain.PetManagement.AgregateRoot
     public IReadOnlyCollection<Pet> Pets => _pets;
     public void AddPet(Pet pet) => _pets.Add(pet);
 
+    public bool isPetExists(Guid petId) => _pets.Any(p => p.Id.Value == petId);
+
     // public void UpdateSocialNetworks(IReadOnlyCollection<SocialNetwork> socialNetworks) => SocialNetworks = new(socialNetworks);
     public void UpdateSocialNetworks(SocialNetworks socialNetworks)
     {

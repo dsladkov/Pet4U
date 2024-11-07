@@ -91,4 +91,23 @@ public class VolunteersRepository : IVolunteersRepository
 
     return volunteer;
   }
+
+  public async Task<Result<Pet>> GetPetById(
+        PetId petId,
+        CancellationToken cancellationToken = default)
+    {
+        var volunteers = _dbContext.Volunteers.Include(v => v.Pets);
+
+        var volunteer = await volunteers.FirstOrDefaultAsync(v => v.Pets!.Any(p => p.Id == petId), cancellationToken);
+
+        if (volunteer is null)
+            return Error.Failure("volunteer.not.found", "volunteer not found");
+
+        var pet = volunteer.Pets!.FirstOrDefault(p => p.Id == petId);
+
+        if (pet is null)
+            return Errors.General.NotFound(petId.Value);
+
+        return pet;
+    }
 }

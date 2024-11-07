@@ -43,7 +43,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
   {
    await using var stream = file.OpenReadStream();
    var path = Guid.NewGuid().ToString();
-   
+
    var command = UploadFileCommand.ToCommand(stream,"photos",path);
 
     var result = await addPetPhotoHandler.HandleAsync(command, cancellationToken);
@@ -63,7 +63,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
   CancellationToken cancellationToken = default)
   {
     await using var processor = new FormFileCollectionProcessor();
-    var command = processor.Process(files);
+    var command = processor.Process(files ,Guid.Empty, Guid.Empty);
     var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
     return result.ToResponse();
   }
@@ -89,7 +89,7 @@ public FileController(ILogger<FileController> logger) //IMinioClient minioClient
 
       var path = Guid.NewGuid().ToString();
       //var command = UploadFileCommand.ToCommand(stream,"photos", path);
-      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, "photos",path)));
+      var command = UploadFilesCommand.ToCommand(streams.Select(s => new UploadFileCommand(s, "photos",path)), Guid.Empty, Guid.Empty);
       var result = await uploadMediaHandler.HandleAsync(command, cancellationToken);
       results.Add(result);
       

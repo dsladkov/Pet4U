@@ -9,7 +9,7 @@ public class FormFileCollectionProcessor : IAsyncDisposable, IFormFileCollection
   public async ValueTask DisposeAsync() =>
     await Parallel.ForEachAsync(commands,  async (command, cancellationToken) => await command.Stream.DisposeAsync());
 
-  public UploadFilesCommand Process(IFormFileCollection files)
+  public UploadFilesCommand Process(IFormFileCollection files, Guid volunteerId, Guid petId)
   {
     Parallel.ForEach(files, file => {
       var stream = file.OpenReadStream();
@@ -17,11 +17,11 @@ public class FormFileCollectionProcessor : IAsyncDisposable, IFormFileCollection
       commands.Add(new UploadFileCommand(stream, "photos",file.FileName));
     });
 
-    return UploadFilesCommand.ToCommand(commands);
+    return UploadFilesCommand.ToCommand(commands, volunteerId, petId);
   }
 }
 
 public interface IFormFileCollectionProcessor
 {
-  UploadFilesCommand Process(IFormFileCollection files);
+  UploadFilesCommand Process(IFormFileCollection files, Guid volunteerId, Guid petId);
 }

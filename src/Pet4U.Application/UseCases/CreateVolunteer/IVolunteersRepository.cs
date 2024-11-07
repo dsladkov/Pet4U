@@ -15,6 +15,10 @@ public interface IVolunteersRepository
         Volunteer volunteer,
       CancellationToken cancellationToken = default);
 
+    Task<Result<Pet>> GetPetById(
+        PetId petId,
+        CancellationToken cancellationToken = default);
+
     //Task<Result<Guid>> Save(Volunteer volunteer, CancellationToken cancellationToken = default);
     //Task<Result<Volunteer?>>Delete(
     //  Volunteer volunteer, 
