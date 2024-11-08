@@ -38,9 +38,9 @@ public class UploadMediaHandler : IUploadMediaHandler
     try
     {
 
-      var volunteerResult = _volunteersRepository.GetByIdAsync(VolunteerId.Create(command.volunteerId));
+      var volunteerResult = await _volunteersRepository.GetByIdAsync(VolunteerId.Create(command.volunteerId), cancellationToken);
 
-      if(volunteerResult.IsFaulted)
+      if(volunteerResult.IsFailure)
         return Errors.General.NotFound(command.volunteerId);
 
       var petResult = await _volunteersRepository.GetPetById(PetId.Create(command.petId), cancellationToken);
@@ -69,7 +69,9 @@ public class UploadMediaHandler : IUploadMediaHandler
     catch (Exception ex)
     {
       _logger.LogError(ex, ex.Message);
+
       transaction.Rollback();
+
       return Error.Failure("files.upload", "fail to upload files in minio");
     }
   }

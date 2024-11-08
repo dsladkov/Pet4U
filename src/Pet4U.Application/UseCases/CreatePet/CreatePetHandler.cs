@@ -84,7 +84,12 @@ public class CreatePetHandler : ICreatePetHandler
 
     await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-    _logger.LogInformation("Volunteer Id: {Id} has added new pet {id}", voluteerResult.Value.Id, pet.Id.Value);
+    _logger.LogInformation("Volunteer {firstName} {lastName} Id: {Id} has added a new pet {nickname} {id}", 
+      voluteerResult.Value.FullName.FirstName,
+      voluteerResult.Value.FullName.LastName,
+      voluteerResult.Value.Id,
+      pet.Nickname, 
+      pet.Id.Value);
     return pet.Id.Value;
   }
 }
