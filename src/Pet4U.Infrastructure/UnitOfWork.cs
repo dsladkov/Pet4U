@@ -25,7 +25,7 @@ namespace Pet4U.Infrastructure
             return transaction.GetDbTransaction();
         }
 
-        public async Task SaveChanges(CancellationToken cancellationToken = default)
+        public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

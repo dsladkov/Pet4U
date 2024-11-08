@@ -34,7 +34,7 @@ public class AddBreedsHandler : IAddBreedsHandler
       return addedBreeds.Error;
 
     var speciesId = await _speciesRepository.Save(species.Value, cancellationToken);
-    _logger.LogInformation("Species : {Id} has been created", species.Value.Id);
+    _logger.LogInformation("Species {Title} with Id : {Id} has been updated by adding breeds: {breeds}", species.Value.Title ,species.Value.Id, string.Join(", ", breeds.Select(b => b.Title)) );
 
     return species.Value.Id.Value;
   }

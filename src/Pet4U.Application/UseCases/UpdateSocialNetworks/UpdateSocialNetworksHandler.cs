@@ -44,14 +44,14 @@ public class UpdateSocialNetworksHandler : IUpdateSocialNetworks
 
     //volunteerResult.Value.UpdateSocialNetworks(socialNetworks);
 
-    var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value, cancellationToken);
-    await _unitOfWork.SaveChanges(cancellationToken);
+    //var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value, cancellationToken);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
     
-    _logger.LogInformation("SocialNetworks of Volunteer {firstName} {lastName} with id {id} have been updated",
+    _logger.LogInformation("SocialNetworks of Volunteer {FirstName} {LastName} with id {Id} have been updated",
       volunteerResult.Value.FullName.FirstName,
       volunteerResult.Value.FullName.LastName,
       volunteerResult.Value.Id);
-      
-    return volunteerUpdated;
+
+    return volunteerResult.Value;
   }
 }

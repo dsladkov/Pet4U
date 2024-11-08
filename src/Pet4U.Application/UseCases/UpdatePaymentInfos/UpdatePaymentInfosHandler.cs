@@ -38,14 +38,14 @@ public class UpdatePaymentInfosHandler : IUpdatePaymentInfosHandler
      
     volunteerResult?.Value?.UpdatePaymentInfos(new PaymentInfos(paymentInfos));
 
-    var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value,cancellationToken);
-    await _unitOfWork.SaveChanges(cancellationToken);
     
-    _logger.LogInformation("PaymentInfos of Volunteer {firstName} {lastName} with id {0} have been updated",
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+    
+    _logger.LogInformation("PaymentInfos of Volunteer {FirstName} {LastName} with id {Id} have been updated",
       volunteerResult.Value.FullName.FirstName,
       volunteerResult.Value.FullName.LastName, 
       volunteerResult.Value.Id);
-      
-    return volunteerUpdated;
+
+    return volunteerResult.Value;
   }
 }

@@ -82,7 +82,7 @@ public class CreatePetHandler : ICreatePetHandler
 
     var result = _volunteerRepository.Add(voluteerResult.Value, cancellationToken);
 
-    await _unitOfWork.SaveChanges(cancellationToken);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     _logger.LogInformation("Volunteer Id: {Id} has added new pet {id}", voluteerResult.Value.Id, pet.Id.Value);
     return result;

@@ -67,8 +67,8 @@ public class CreateVolunteerHandler : ICreateVolunteerHandler
       return volunteer.Error!;
 
     var result = _volunteerRepository.Add(volunteer.Value, cancellationToken);
-    await _unitOfWork.SaveChanges(cancellationToken);
-    _logger.LogInformation("Volunteer Id: {Id} has been created", volunteer.Value.Id);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+    _logger.LogInformation("Volunteer {FullName} {LastName} with Id: {Id} has been created", volunteer.Value.FullName.FirstName, volunteer.Value.FullName.LastName ,volunteer.Value.Id);
     return result;
   }
 }

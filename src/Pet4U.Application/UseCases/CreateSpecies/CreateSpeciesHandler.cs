@@ -38,8 +38,8 @@ public class CreateSpeciesHandler : ICreateSpeciesHandler
       return species.Error;
 
     var speciesId = _speciesRepository.Add(species.Value);
-    await _unitOfWork.SaveChanges(cancellationToken);
-    _logger.LogInformation("Species : {Id} has been created", species.Value.Id);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
+    _logger.LogInformation("Species {Title}: {Id} has been created", species.Value.Title ,species.Value.Id);
 
     return species.Value.Id.Value;
   }

@@ -57,7 +57,7 @@ public class UploadMediaHandler : IUploadMediaHandler
          petResult.Value.AddPetPhoto(new PetPhoto(){Path = fileData.ObjectName,  IsMain = false });
       }
 
-      await _unitOfWork.SaveChanges(cancellationToken);
+      await _unitOfWork.SaveChangesAsync(cancellationToken);
 
       var result = await _fileProvider.UploadFiles(filesData, cancellationToken);
 

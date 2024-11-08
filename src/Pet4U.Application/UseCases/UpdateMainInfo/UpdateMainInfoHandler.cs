@@ -47,10 +47,10 @@ public class UpdateMainInfoHandler : IUpdateMainInfoHandler
 
     volunteerResult?.Value?.UpdateMainInfo(fullName, command.Email, command.Experience, descriptionResult, phoneResult);
 
-    var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value,cancellationToken);
-    await _unitOfWork.SaveChanges(cancellationToken);
+    //var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value,cancellationToken);
+    await _unitOfWork.SaveChangesAsync(cancellationToken);
 
     _logger.LogInformation("Volunteer {firstName} {lastName} with id {id} main info has been updated with description {description} and phone {phone}", fullName.FirstName, fullName.LastName,volunteerResult.Value.Id, volunteerResult.Value.Description, volunteerResult.Value.Phone);
-    return volunteerUpdated;
+    return volunteerResult.Value;
   }
 }
