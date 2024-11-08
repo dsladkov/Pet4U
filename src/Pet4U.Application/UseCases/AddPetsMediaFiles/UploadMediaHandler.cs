@@ -68,7 +68,8 @@ public class UploadMediaHandler : IUploadMediaHandler
      }
     catch (Exception ex)
     {
-      _logger.LogError(ex, ex.Message);
+      _logger.LogError(ex,
+                "Failure add photos to pet: {id}", command.petId);
 
       transaction.Rollback();
 
