@@ -39,7 +39,7 @@ public class DeleteVolunteerHandler : IDeleteVolunteerHandler
     var volunteerDeleted = _volunteerRepository.Add(volunteerResult.Value,cancellationToken); //Instead of Delete it will be marked as deleted at entity bool prop
     await _unitOfWork.SaveChanges(cancellationToken);
     
-    _logger.LogInformation("Volunteer with id {0} is deleted", volunteerResult.Value.Id);
+    _logger.LogInformation("Volunteer {firstName} {lastName} with id {0} is deleted", volunteerResult.Value.FullName.FirstName, volunteerResult.Value.FullName.MiddleName, volunteerResult.Value.Id);
     return volunteerDeleted.Value;
   }
 }

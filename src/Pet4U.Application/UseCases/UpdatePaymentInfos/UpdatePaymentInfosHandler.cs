@@ -41,7 +41,11 @@ public class UpdatePaymentInfosHandler : IUpdatePaymentInfosHandler
     var volunteerUpdated = _volunteerRepository.Add(volunteerResult.Value,cancellationToken);
     await _unitOfWork.SaveChanges(cancellationToken);
     
-    _logger.LogInformation("PaymentInfos of Volunteer with id {0} have been updated", volunteerResult.Value.Id);
+    _logger.LogInformation("PaymentInfos of Volunteer {firstName} {lastName} with id {0} have been updated",
+      volunteerResult.Value.FullName.FirstName,
+      volunteerResult.Value.FullName.LastName, 
+      volunteerResult.Value.Id);
+      
     return volunteerUpdated;
   }
 }
